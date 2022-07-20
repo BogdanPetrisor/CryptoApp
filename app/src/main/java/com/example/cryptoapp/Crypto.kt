@@ -8,4 +8,8 @@ data class Crypto(
     val is_new: Boolean,
     val is_active: Boolean,
     val type: String
-)
+){
+    override fun toString(): String {
+        return "   $type:   #$rank    $name    $symbol    $is_new    $is_active"
+    }
+}

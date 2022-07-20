@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CryptoApp</string>
+    <string name="Type">Type</string>
+    <string name="rank">Rank</string>
+    <string name="name">Name</string>
+    <string name="symbol">Symbol</string>
+    <string name="isNew">New</string>
+    <string name="isActive">Active</string>
 </resources>

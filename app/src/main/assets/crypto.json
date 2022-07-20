@@ -1,5 +1,4 @@
-{
-  "crypto": [
+[
     {
       "id": "btc-bitcoin",
       "name": "Bitcoin",
@@ -28,4 +27,3 @@
       "type": "token"
     }
   ]
-}
