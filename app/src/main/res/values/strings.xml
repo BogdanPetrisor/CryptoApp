@@ -6,4 +6,10 @@
     <string name="symbol">Symbol</string>
     <string name="isNew">New</string>
     <string name="isActive">Active</string>
+    <string name="tvTether">Tether</string>
+    <string name="tvEthereum">Ethereum</string>
+    <string name="tvBitcoin">Bitcoin</string>
+    <string name="bitcoinContentDescription">Bitcoin</string>
+    <string name="ethereumContentDescription">Ethereum</string>
+    <string name="tetherContentDescription">Tether</string>
 </resources>
