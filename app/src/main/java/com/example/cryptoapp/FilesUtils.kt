@@ -20,5 +20,7 @@ class FilesUtils {
             val listCryptoType = object : TypeToken<List<CoinModel>>() {}.type
             return Gson().fromJson(jsonString, listCryptoType)
         }
+
+        //TODO :
     }
 }

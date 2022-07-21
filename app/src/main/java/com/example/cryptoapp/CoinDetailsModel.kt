@@ -15,10 +15,10 @@ data class CoinDetailsModel(
     val type: String = "",
     val contract: String = "",
     val platform: String = "",
-    val contracts: ContractsModel = ContractsModel(),
+    val contracts: List<ContractsModel> = emptyList(),
     val parent: ParentModel = ParentModel(),
-    val tags: TagsModel = TagsModel(),
-    val team: TeamModel = TeamModel(),
+    val tags: List<TagsModel> = emptyList(),
+    val team: List<TeamModel> = emptyList(),
     val description: String = "",
     val message: String = "",
     @SerializedName("open_source")
@@ -37,7 +37,7 @@ data class CoinDetailsModel(
     val hashAlgorithm: String = "",
     val links: LinksModel = LinksModel(),
     @SerializedName("links_extended")
-    val linksExtended: LinksExtendedModel = LinksExtendedModel(),
+    val linksExtended: List<LinksExtendedModel> = emptyList(),
     val whitepaperModel: WhitepaperModel = WhitepaperModel(),
     @SerializedName("first_data_at")
     val firstDataAt: Date = Date(),
