@@ -1,7 +1,7 @@
 package com.example.cryptoapp
 
 data class StatsModel(
-    val contributors: Int = 0,
-    val stars: Int = 0,
-    val followers: Int = 0
+    val contributors: Double = 0.0,
+    val stars: Double = 0.0,
+    val followers: Double = 0.0
 )
