@@ -23,5 +23,13 @@ class CoinDetailsActivity : AppCompatActivity() {
                     binding.tvIsActive.setTextColor(Color.RED)}
             else -> {}
         }
+        binding.tvDescription.text = coin?.description
+        binding.tagsGridLayout.adapter = coin?.tags?.let { GridAdapter(this, it) }
+        binding.tvTeamTitle.text = "Team members"
+        binding.tvFirstMember.text = coin?.team?.get(0)?.name
+        binding.tvPositionFirstMember.text=coin?.team?.get(0)?.position
+        binding.tvSecondMember.text = coin?.team?.get(1)?.name
+        binding.tvPositionSecondMember.text=coin?.team?.get(1)?.position
+
     }
 }
