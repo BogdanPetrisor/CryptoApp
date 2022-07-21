@@ -1,6 +1,7 @@
 package com.example.cryptoapp
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
@@ -21,6 +22,17 @@ class FilesUtils {
             return Gson().fromJson(jsonString, listCryptoType)
         }
 
-        //TODO :
+
+        fun getCoinByID(context: Context, id: String): CoinDetailsModel {
+            lateinit var jsonString: String
+            try {
+                jsonString = context.assets.open("$id.json")
+                    .bufferedReader()
+                    .use { it.readText() }
+            } catch (ioException: IOException) {
+                Log.e(TAG,"Application error")
+            }
+            return Gson().fromJson(jsonString, CoinDetailsModel::class.java)
+        }
     }
 }

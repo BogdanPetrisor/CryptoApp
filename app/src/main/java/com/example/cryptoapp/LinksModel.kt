@@ -1,10 +1,10 @@
 package com.example.cryptoapp
 
 data class LinksModel(
-    val explorer: String = "",
-    val facebook: String = "",
-    val reddit: String = "",
-    val source_code: String = "",
-    val website: String = "",
-    val youtube: String = "",
+    val explorer: List<String> = emptyList(),
+    val facebook: List<String> = emptyList(),
+    val reddit: List<String> = emptyList(),
+    val source_code: List<String> = emptyList(),
+    val website: List<String> = emptyList(),
+    val youtube: List<String> = emptyList(),
     )
