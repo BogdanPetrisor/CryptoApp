@@ -118,13 +118,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="80dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="@string/bitcoinContentDescription"
+            android:id="@+id/tetherImage"
+            style="@style/imageStyle"
+            android:contentDescription="@string/tetherContentDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTether"
@@ -243,13 +239,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView"
-            android:contentDescription="@string/ethereumContentDescription"
-            android:layout_width="82dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:id="@+id/bitcoinImage"
+            style="@style/imageStyle"
+            android:contentDescription="@string/bitcoinContentDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBTC"
@@ -372,13 +364,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:contentDescription="@string/tetherContentDescription"
-            android:layout_width="81dp"
-            android:layout_height="66dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:id="@+id/ethereumImage"
+            style="@style/imageStyle"
+            android:contentDescription="@string/ethereumContentDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewETH"
