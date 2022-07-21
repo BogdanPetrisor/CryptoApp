@@ -1,8 +1,7 @@
 package com.example.cryptoapp
 
-data class Tags(
+data class TeamModel(
     val id: String = "",
     val name: String = "",
-    val coin_counter: Int = 0,
-    val ico_counter: Int = 0
+    val position: String = ""
 )

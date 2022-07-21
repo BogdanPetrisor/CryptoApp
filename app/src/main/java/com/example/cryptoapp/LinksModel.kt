@@ -1,6 +1,6 @@
 package com.example.cryptoapp
 
-data class Links(
+data class LinksModel(
     val explorer: String = "",
     val facebook: String = "",
     val reddit: String = "",
