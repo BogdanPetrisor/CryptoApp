@@ -7,7 +7,7 @@ import java.io.IOException
 
 class FilesUtils {
     companion object {
-        fun getCrypto(context: Context): List<CryptoData> {
+        fun getCrypto(context: Context): List<CoinModel> {
             lateinit var jsonString: String
             try {
                 jsonString = context.assets.open("crypto.json")
@@ -17,7 +17,7 @@ class FilesUtils {
 
             }
 
-            val listCryptoType = object : TypeToken<List<CryptoData>>() {}.type
+            val listCryptoType = object : TypeToken<List<CoinModel>>() {}.type
             return Gson().fromJson(jsonString, listCryptoType)
         }
     }

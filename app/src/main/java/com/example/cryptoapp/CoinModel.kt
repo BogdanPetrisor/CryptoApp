@@ -1,6 +1,6 @@
 package com.example.cryptoapp
 
-data class CryptoData(
+data class CoinModel(
     val id: String,
     val name: String,
     val symbol: String,
