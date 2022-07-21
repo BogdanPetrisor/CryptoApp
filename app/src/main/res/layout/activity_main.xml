@@ -24,7 +24,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/tvTether"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="20sp"
+            android:textSize="@dimen/textDimension"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +147,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/tvBitcoin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="20sp"
+            android:textSize="@dimen/textDimension"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -262,20 +262,21 @@
 
         <TextView
             android:id="@+id/textViewETH"
+            android:text="@string/tvEthereum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
-            android:text="@string/tvEthereum"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="20sp"
+            android:textSize="@dimen/textDimension"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            />
 
         <TextView
             android:id="@+id/textView15"
