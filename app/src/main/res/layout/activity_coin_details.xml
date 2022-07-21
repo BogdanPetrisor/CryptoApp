@@ -4,13 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoinDetailsActivity">
+    tools:context=".CoinDetailsActivity"
+    android:background="@color/black"
+    android:padding="30dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvTitle"
+        android:layout_width="254dp"
+        android:layout_height="155dp"
+        android:textColor="@color/white"
+        android:textSize="55sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1. Bitcoin \n (BTC)
+                    " />
+
+    <TextView
+        android:id="@+id/tvIsActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:textColor="#00FF00"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text ="active"/>
+
+    <TextView
+        android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        tools:layout_editor_absoluteX="195dp"
-        tools:layout_editor_absoluteY="342dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        android:textColor="@color/white"
+        tools:text ="Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator."/>
+
+    <TextView
+        android:id="@+id/tvTags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tagsTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+        android:textSize="55sp"
+        android:textColor="@color/white"
+        tools:text="Tags"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

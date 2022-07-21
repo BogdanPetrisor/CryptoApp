@@ -12,4 +12,5 @@
     <string name="bitcoinContentDescription">Bitcoin</string>
     <string name="ethereumContentDescription">Ethereum</string>
     <string name="tetherContentDescription">Tether</string>
+    <string name="tagsTitle">Tags</string>
 </resources>
