@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ethereumLayout">
+        app:layout_constraintTop_toBottomOf="@+id/ethereumLayout"
+        tools:ignore="RtlSymmetry">
 
         <TextView
             android:id="@+id/textViewUSDT"
@@ -140,7 +141,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/ethereumLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread">
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:ignore="RtlSymmetry">
 
         <TextView
             android:id="@+id/textViewBTC"
@@ -163,8 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toRightOf="@id/tvNameBtc"
-            android:layout_weight="1"
+            android:layout_toEndOf="@id/tvNameBtc"
             android:paddingEnd="16dp"
             android:text="@string/symbol"
             android:textSize="20sp"
@@ -190,7 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toRightOf="@id/tvRankBtc"
+            android:layout_toEndOf="@id/tvRankBtc"
             android:paddingEnd="16dp"
             android:text="@string/name"
             android:textSize="20sp"
@@ -201,7 +202,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toRightOf="@id/tvSymbolBtc"
+            android:layout_toEndOf="@id/tvSymbolBtc"
             android:paddingEnd="16dp"
             android:text="@string/isNew"
             android:textSize="20sp"
@@ -213,7 +214,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toRightOf="@id/tvIsNewBtc"
+            android:layout_toEndOf="@id/tvIsNewBtc"
             android:text="@string/isActive"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -237,7 +238,8 @@
             android:layout_below="@+id/textViewBTC"
             android:layout_alignParentEnd="true"
             android:contentDescription="@string/bitcoinContentDescription"
-            app:srcCompat="@drawable/opengraph" />
+            app:srcCompat="@drawable/opengraph"
+            tools:ignore="ImageContrastCheck" />
 
     </RelativeLayout>
 
