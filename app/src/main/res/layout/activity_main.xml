@@ -8,6 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tetherLayout"
+        android:paddingStart="4dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,11 +22,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:text="@string/tvTether"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="@dimen/textDimension"
             android:textStyle="bold"
+            style="@style/textStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -128,22 +130,24 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/BitcoinLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingStart="4dp"
         app:layout_constraintBottom_toTopOf="@+id/ethereumLayout"
         app:layout_constraintEnd_toEndOf="@+id/ethereumLayout"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/ethereumLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread">
 
         <TextView
             android:id="@+id/textViewBTC"
+            style="@style/textStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_below="@+id/tvRankBtc"
             android:layout_marginTop="16dp"
             android:text="@string/tvBitcoin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -151,89 +155,78 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/tvRankBtc"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/tvSymbolBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:layout_toRightOf="@id/tvNameBtc"
             android:layout_weight="1"
+            android:paddingEnd="16dp"
             android:text="@string/symbol"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView11"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/tvRankBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:layout_toEndOf="@+id/tvTypeBtc"
+            android:paddingEnd="16dp"
             android:text="@string/rank"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView9"
+            app:layout_constraintEnd_toStartOf="@+id/tvNameBtc"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintStart_toEndOf="@+id/tvTypeBtc"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/tvNameBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:layout_toRightOf="@id/tvRankBtc"
+            android:paddingEnd="16dp"
             android:text="@string/name"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView10"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/tvIsNewBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:layout_toRightOf="@id/tvSymbolBtc"
+            android:paddingEnd="16dp"
             android:text="@string/isNew"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView12"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tvIsActiveBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:layout_toRightOf="@id/tvIsNewBtc"
             android:text="@string/isActive"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tvTypeBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:paddingEnd="16dp"
             android:text="@string/Type"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView8"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -241,13 +234,12 @@
         <ImageView
             android:id="@+id/bitcoinImage"
             style="@style/imageStyle"
+            android:layout_below="@+id/textViewBTC"
+            android:layout_alignParentEnd="true"
             android:contentDescription="@string/bitcoinContentDescription"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewBTC"
             app:srcCompat="@drawable/opengraph" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ethereumLayout"
@@ -262,27 +254,27 @@
 
         <TextView
             android:id="@+id/textViewETH"
-            android:text="@string/tvEthereum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
+            android:text="@string/tvEthereum"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="@dimen/textDimension"
             android:textStyle="bold"
+            style="@style/textStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15"
-            app:layout_constraintVertical_bias="0.0"
-            />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:layout_weight="1"
             android:text="@string/name"
             android:textSize="20sp"
@@ -296,7 +288,7 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:layout_weight="1"
             android:text="@string/Type"
             android:textSize="20sp"
@@ -310,7 +302,7 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:layout_weight="1"
             android:text="@string/rank"
             android:textSize="20sp"
@@ -324,7 +316,7 @@
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:layout_weight="1"
             android:text="@string/symbol"
             android:textSize="20sp"
@@ -338,7 +330,7 @@
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:layout_weight="1"
             android:text="@string/isNew"
             android:textSize="20sp"
@@ -354,7 +346,7 @@
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/layoutMarginTop"
             android:layout_weight="1"
             android:text="@string/isActive"
             android:textSize="20sp"

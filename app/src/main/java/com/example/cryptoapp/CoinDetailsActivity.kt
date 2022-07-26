@@ -16,7 +16,7 @@ class CoinDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         val coinId = intent.getStringExtra(EXTRA_ID)
         val coin = coinId?.let { FilesUtils.getCoinByID(this, coinId) }
-        binding.tvTitle.text = "1. ${coin?.name} \n(${coin?.symbol})"
+        binding.tvTitle.text = "${coin?.rank}. ${coin?.name} \n(${coin?.symbol})"
         when(coin?.isActive){
             true->binding.tvIsActive.text = "active"
             false->{binding.tvIsActive.text = "inactive"

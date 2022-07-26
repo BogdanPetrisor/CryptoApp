@@ -9,4 +9,12 @@
         <item name="android:layout_marginBottom">16dp</item>
     </style>
 
+    <style name="descriptionStyle">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="textStyle">
+
+    </style>
+
 </resources>

@@ -3,6 +3,8 @@ package com.example.cryptoapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import com.example.cryptoapp.databinding.ActivityMainBinding
 
 const val TAG = "CoinsActivity"
@@ -25,25 +27,26 @@ class CoinsActivity : AppCompatActivity() {
             }
         }
 
-        binding.textViewBTC.setOnClickListener{
-            val intent = Intent(this,CoinDetailsActivity::class.java)
-            intent.putExtra(EXTRA_ID,"bitcoin")
-            startActivity(intent)
+        setupViews()
+    }
+
+    private fun setupViews() {
+        binding.textViewBTC.setOnClickListener {
+            navigateWithExtra("bitcoin")
         }
-
-        binding.textViewETH.setOnClickListener{
-            val intent = Intent(this,CoinDetailsActivity::class.java)
-            intent.putExtra(EXTRA_ID,"ethereum")
-            startActivity(intent)
+        binding.textViewETH.setOnClickListener {
+            navigateWithExtra("ethereum")
         }
-
-        binding.textViewUSDT.setOnClickListener{
-            val intent = Intent(this,CoinDetailsActivity::class.java)
-            intent.putExtra(EXTRA_ID,"tether")
-            startActivity(intent)
+        binding.textViewUSDT.setOnClickListener {
+            navigateWithExtra("tether")
         }
+    }
 
 
+    private fun navigateWithExtra(extra: String) {
+        val intent = Intent(this, CoinDetailsActivity::class.java)
+        intent.putExtra(EXTRA_ID, extra)
+        startActivity(intent)
     }
 
 
