@@ -28,7 +28,7 @@ data class CoinDetailsModel(
     @SerializedName("development_status")
     val developmentStatus: String = "",
     @SerializedName("hardware_wallet")
-    val hardwarewallet: Boolean = false,
+    val hardwareWallet: Boolean = false,
     @SerializedName("proof_type")
     val proofType: String = "",
     @SerializedName("org_structure")
