@@ -112,7 +112,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewUSDT"
         app:srcCompat="@drawable/_25" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/BitcoinLayout"
         android:layout_width="match_parent"
         android:layout_height="183dp"
@@ -126,7 +126,6 @@
             style="@style/textStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvRankBtc"
             android:layout_marginTop="16dp"
             android:text="@string/tvBitcoin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -142,18 +141,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toEndOf="@id/tvNameBtc"
             android:paddingEnd="16dp"
             android:text="@string/symbol"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/tvNameBtc"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvRankBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toEndOf="@+id/tvTypeBtc"
             android:paddingEnd="16dp"
             android:text="@string/rank"
             android:textSize="20sp"
@@ -168,33 +167,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toEndOf="@id/tvRankBtc"
             android:paddingEnd="16dp"
             android:text="@string/name"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/tvRankBtc"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvIsNewBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toEndOf="@id/tvSymbolBtc"
             android:paddingEnd="16dp"
             android:text="@string/isNew"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/tvSymbolBtc"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvIsActiveBtc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/layoutMarginTop"
-            android:layout_toEndOf="@id/tvIsNewBtc"
             android:text="@string/isActive"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvIsNewBtc"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvTypeBtc"
@@ -212,13 +215,13 @@
         <ImageView
             android:id="@+id/bitcoinImage"
             style="@style/imageStyle"
-            android:layout_below="@+id/textViewBTC"
-            android:layout_alignParentEnd="true"
             android:contentDescription="@string/bitcoinContentDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBTC"
             app:srcCompat="@drawable/opengraph"
             tools:ignore="ImageContrastCheck" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textViewETH"
