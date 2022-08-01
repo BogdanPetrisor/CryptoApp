@@ -13,4 +13,5 @@
     <string name="ethereumContentDescription">Ethereum</string>
     <string name="tetherContentDescription">Tether</string>
     <string name="tagsTitle">Tags</string>
+    <string name="image_coin">Image Coin</string>
 </resources>
