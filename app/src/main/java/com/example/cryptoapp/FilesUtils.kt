@@ -23,16 +23,17 @@ class FilesUtils {
         }
 
 
-        fun getCoinByID(context: Context, id: String): CoinDetailsModel {
-            lateinit var jsonString: String
+        fun getCoinByID(context: Context, id: String): CoinDetailsModel? {
+            var jsonString: String = ""
             try {
                 jsonString = context.assets.open("$id.json")
                     .bufferedReader()
                     .use { it.readText() }
-            } catch (ioException: IOException) {
-                Log.e(TAG,"Application error")
+                return Gson().fromJson(jsonString, CoinDetailsModel::class.java)
+            } catch (ioException: Exception) {
+                Log.e(TAG, ioException.message + "")
             }
-            return Gson().fromJson(jsonString, CoinDetailsModel::class.java)
+            return null
         }
     }
 }
