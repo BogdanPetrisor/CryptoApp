@@ -19,5 +19,6 @@ class LoginActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container_view_tag, LoginFragment())
             .commit()
+
     }
 }

@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
  */
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    val movieRepository = TheMovieDBRepository()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,11 +26,11 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.loginButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-
                 TheMovieDBRepository().apply {
                     println("SUNT AICI")
                     val username = binding.textInputEditText.text.toString()
@@ -41,6 +41,17 @@ class LoginFragment : Fragment() {
                         CredentialsModel(username, password, token.requestToken)
                     val login = login(credentials)
                     println(login)
+                    if (login.success) {
+                        val homeScreenFragment = SecondFragment()
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(
+                                R.id.fragment_container_view_tag,
+                                homeScreenFragment,
+                                "findThisFragment"
+                            )
+                            ?.addToBackStack(null)
+                            ?.commit()
+                    }
                     val sessionId = sessionId(login)
                     println(sessionId)
                     val delete = deleteSession(sessionId)
@@ -49,6 +60,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
