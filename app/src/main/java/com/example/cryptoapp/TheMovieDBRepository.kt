@@ -1,5 +1,6 @@
 package com.example.cryptoapp
 
+import com.example.cryptoapp.movie.TrendingModel
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -28,5 +29,9 @@ class TheMovieDBRepository {
 
     suspend fun deleteSession(sessionModel: SessionModel): SessionModel {
         return service.deleteSession(apiKey,sessionModel)
+    }
+
+    suspend fun getTrendingMoviesAndSeries(): TrendingModel{
+        return service.getTrendingMoviesAndSeries(apiKey)
     }
 }

@@ -17,6 +17,7 @@
 
     <ImageView
         android:id="@+id/user_imageView"
+        android:contentDescription="@string/user_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/user_toolbar"
@@ -26,6 +27,8 @@
         android:layout_marginStart="32dp"/>
 
     <ImageView
+        android:id="@+id/search_button"
+        android:contentDescription="@string/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/search"

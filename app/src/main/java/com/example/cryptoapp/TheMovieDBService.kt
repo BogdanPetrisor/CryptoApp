@@ -1,5 +1,6 @@
 package com.example.cryptoapp
 
+import com.example.cryptoapp.movie.TrendingModel
 import retrofit2.http.*
 
 interface TheMovieDBService {
@@ -25,4 +26,9 @@ interface TheMovieDBService {
         @Query("api_key") apiKey: String,
         @Body sessionModel: SessionModel
     ):SessionModel
+
+    @GET("/3/trending/all/day")
+    suspend fun getTrendingMoviesAndSeries(
+        @Query("api_key") apiKey: String
+    ):TrendingModel
 }

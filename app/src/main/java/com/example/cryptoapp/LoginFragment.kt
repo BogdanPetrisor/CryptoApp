@@ -33,6 +33,8 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 TheMovieDBRepository().apply {
                     println("SUNT AICI")
+                    val trending = getTrendingMoviesAndSeries()
+                    println(trending)
                     val username = binding.textInputEditText.text.toString()
                     val password = binding.passwordText.text.toString()
                     val token = requestToken()
