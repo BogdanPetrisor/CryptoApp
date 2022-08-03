@@ -31,4 +31,13 @@
         <item name="android:textColor">@color/primaryTextColor</item>
 
     </style>
+
+    <style name="SecondTheme.CryptoApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="SecondTheme.CryptoApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="SecondTheme.CryptoApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

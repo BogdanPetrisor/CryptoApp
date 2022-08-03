@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.cryptoapp">
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,21 +12,32 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/SecondTheme.CryptoApp"
+        android:theme="@style/SecondTheme.CryptoApp.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".CoinDetailsActivity"
-            android:parentActivityName=".CoinsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CoinsActivity"
-            android:exported="true">
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/title_activity_login"
+            android:theme="@style/SecondTheme.CryptoApp.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".CoinDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".CoinsActivity" />
+        <activity
+            android:name=".CoinsActivity"
+            android:exported="true" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

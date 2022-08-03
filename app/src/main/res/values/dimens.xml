@@ -2,5 +2,6 @@
 <resources>
     <dimen name="textDimension">20sp</dimen>
     <dimen name="textSize">35sp</dimen>
-    <dimen name ="layoutMarginTop">16dp</dimen>
+    <dimen name="layoutMarginTop">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
