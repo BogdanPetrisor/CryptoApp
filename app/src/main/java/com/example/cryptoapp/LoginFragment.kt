@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
  */
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -27,23 +26,25 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.loginButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 TheMovieDBRepository().apply {
                     println("SUNT AICI")
-                    val trending = getTrendingMoviesAndSeries()
-                    println(trending)
                     val username = binding.textInputEditText.text.toString()
                     val password = binding.passwordText.text.toString()
                     val token = requestToken()
                     println(token)
                     val credentials =
-                        CredentialsModel(username, password, token.requestToken)
+                        CredentialsModel("bogdipetrisor123", "parola123", token.requestToken)
                     val login = login(credentials)
                     println(login)
                     if (login.success) {
+                       //daca id exista in db sa nu faca nimic
+                        //daca nu sa creeze un camp nou
                         val homeScreenFragment = SecondFragment()
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(

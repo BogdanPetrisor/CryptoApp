@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movieCardView"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:layout_marginStart="9dp"
+    android:layout_marginEnd="9dp"
+    app:strokeWidth="3dp"
+    app:strokeColor="#00000000"
+    app:cardCornerRadius="20dp"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="57dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/movieCardViewImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/mustWatchTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:background="@drawable/must_watch"
+            android:text="@string/must_watch"
+            app:layout_constraintStart_toStartOf="@id/movieCardViewImage"
+            app:layout_constraintBottom_toBottomOf="@+id/movieCardViewImage"
+            />
+
+        <TextView
+            android:id="@+id/favoriteIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/favorite"
+            app:layout_constraintEnd_toEndOf="@id/movieCardViewImage"
+            app:layout_constraintBottom_toBottomOf="@id/movieCardViewImage"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="15dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

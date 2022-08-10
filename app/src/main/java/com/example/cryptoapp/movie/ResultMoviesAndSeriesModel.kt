@@ -2,13 +2,13 @@ package com.example.cryptoapp.movie
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
-data class ResultModel(
+data class ResultMoviesAndSeriesModel(
     val adult: Boolean = false,
     @SerialName("backdrop_path")
     val backdropPath: String = "",
-    val fullPath: String = "https://image.tmdb.org/t/p/w500$backdropPath",
     val id: Int = 0,
     val title: String = "",
     @SerialName("original_language")
@@ -17,7 +17,7 @@ data class ResultModel(
     val originalTitle: String = "",
     val overview: String = "",
     @SerialName("poster_path")
-    val posterPath: String = "",
+    var posterPath: String = "",
     @SerialName("media_type")
     val mediaType: String = "",
     @SerialName("genre_ids")
@@ -37,6 +37,10 @@ data class ResultModel(
     val originCountry: List<String> = emptyList(),
     @SerialName("first_air_date")
     val firstAirDate: String = "",
-
-
+    @Transient
+    val galleryPath: String = "https://image.tmdb.org/t/p/w500$backdropPath",
+    @Transient
+    val cardViewImagePath: String ="https://image.tmdb.org/t/p/w500$posterPath",
+    @Transient
+    var isFavorite: Boolean = false
     )

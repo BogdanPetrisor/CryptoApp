@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TrendingModel(
+data class TrendingMoviesModel(
     val page: Int = 0,
-    val results: List<ResultModel> = emptyList(),
+    val results: List<ResultMoviesAndSeriesModel> = emptyList(),
     @SerialName("total_pages")
     val totalPages: Int = 0,
     @SerialName("total_results")

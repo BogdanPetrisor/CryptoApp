@@ -1,6 +1,7 @@
 package com.example.cryptoapp
 
-import com.example.cryptoapp.movie.TrendingModel
+import com.example.cryptoapp.movie.PopularPeopleModel
+import com.example.cryptoapp.movie.TrendingMoviesModel
 import retrofit2.http.*
 
 interface TheMovieDBService {
@@ -25,10 +26,48 @@ interface TheMovieDBService {
     suspend fun deleteSession(
         @Query("api_key") apiKey: String,
         @Body sessionModel: SessionModel
-    ):SessionModel
+    ): SessionModel
 
     @GET("/3/trending/all/day")
     suspend fun getTrendingMoviesAndSeries(
         @Query("api_key") apiKey: String
-    ):TrendingModel
+    ): TrendingMoviesModel
+
+    @GET("3/person/popular")
+    suspend fun getPopularPeople(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): PopularPeopleModel
+
+    @GET("3/movie/top_rated")
+    suspend fun getTopRatedMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): TrendingMoviesModel
+
+    @GET("3/movie/popular")
+    suspend fun getPopularMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): TrendingMoviesModel
+
+    @GET("3/tv/airing_today")
+    suspend fun getAiringTodayMovies(
+        @Query("language") language: String,
+        @Query("page") page: Int,
+        @Query("api_key") apiKey: String,
+    ): TrendingMoviesModel
+
+    @GET("3/search/movie")
+    suspend fun searchMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int,
+        @Query("query") query: String
+    ): TrendingMoviesModel
+
+
 }

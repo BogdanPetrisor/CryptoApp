@@ -1,0 +1,10 @@
+query Ships {
+    launchLatest {
+        ships {
+            image
+            name
+        }
+    }
+}
+
+
