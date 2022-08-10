@@ -84,10 +84,24 @@ class SearchFragment : Fragment() {
         callback: (model: ResultMoviesAndSeriesModel, isFavorite: Boolean) -> Unit
     ) {
         val adapter = MovieAdapter(callback)
-        adapter.list = moviesList
-        val gridLayoutManager = GridLayoutManager(activity, 3)
-        binding.searchRecycleView.layoutManager = gridLayoutManager
-        binding.searchRecycleView.adapter = adapter
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dao = context?.let {
+                FavoriteMovieDatabaseInstance.getDatabase(it.applicationContext)?.getMovieDao()
+            }
+            for (movie in moviesList) {
+                val favoriteMovie = dao?.queryAfterId(movie.id.toString())
+                if (favoriteMovie != null)
+                    movie.isFavorite = true
+
+            }
+            lifecycleScope.launch(Dispatchers.Main) {
+                adapter.list = moviesList
+                val gridLayoutManager = GridLayoutManager(activity, 3)
+                binding.searchRecycleView.layoutManager = gridLayoutManager
+                binding.searchRecycleView.adapter = adapter
+            }
+        }
+
     }
 
     override fun onDestroyView() {
