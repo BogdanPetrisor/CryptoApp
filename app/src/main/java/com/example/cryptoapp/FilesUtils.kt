@@ -24,7 +24,7 @@ class FilesUtils {
 
 
         fun getCoinByID(context: Context, id: String): CoinDetailsModel? {
-            var jsonString: String = ""
+            val jsonString: String
             try {
                 jsonString = context.assets.open("$id.json")
                     .bufferedReader()

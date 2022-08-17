@@ -12,6 +12,7 @@ import com.example.cryptoapp.persistence.FavoriteMovieDatabaseInstance
 import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
 import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.movie.*
+import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.ships.ShipsListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +24,10 @@ import kotlinx.coroutines.launch
 class SecondFragment : Fragment() {
     private var _binding: FragmentHomeScreenBinding? = null
     private val binding get() = _binding!!
+    private val dao: FavoriteMovieDao? by lazy {
+        FavoriteMovieDatabaseInstance.getDatabase(requireContext())?.getMovieDao()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,49 +38,7 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dao = context?.let {
-            FavoriteMovieDatabaseInstance.getDatabase(it.applicationContext)?.getMovieDao()
-        }
-
-        val movieDBRepository = TheMovieDBRepository()
-        lifecycleScope.launch(Dispatchers.IO) {
-
-
-            val response =
-                apolloClient.query(ShipsQuery()).execute()
-            val shipsList = response.data?.launchLatest?.ships
-            val galleryList = movieDBRepository.getTrendingMoviesAndSeries().results
-            val starList = movieDBRepository.getPopularPeople().results
-            val topRatedMoviesList = movieDBRepository.getTopRatedMovies().results
-            val popularMoviesList = movieDBRepository.getPopularMovies().results
-            val airingTodayMoviesList = movieDBRepository.getAiringTodayMovies().results
-
-            val callback: (model: ResultMoviesAndSeriesModel, isFavorite: Boolean) -> Unit =
-                { model: ResultMoviesAndSeriesModel, isFavorite: Boolean ->
-                    lifecycleScope.launch(Dispatchers.IO) {
-
-                        if (isFavorite) {
-                            dao!!.insertOne(
-                                FavoriteMovieDatabaseModel(
-                                    id = model.id.toString(),
-                                    name = model.name
-                                )
-                            )
-                        } else {
-                            dao!!.deleteOne(model.id.toString())
-                        }
-                    }
-                }
-            launch(Dispatchers.Main) {
-                showGallery(galleryList)
-                showStars(starList)
-                showMovies(topRatedMoviesList, callback, binding.ratedMoviesRecycleView)
-                showMovies(popularMoviesList, callback, binding.popularMoviesRecycleView)
-                showMovies(airingTodayMoviesList, callback, binding.airingMoviesRecycleView)
-                showShips(shipsList as List<ShipsQuery.Ship>)
-            }
-        }
-
+        initView()
         binding.searchButton.setOnClickListener {
             val searchFragment = SearchFragment()
             activity?.supportFragmentManager?.beginTransaction()
@@ -87,9 +50,48 @@ class SecondFragment : Fragment() {
                 ?.addToBackStack(null)
                 ?.commit()
         }
+    }
+    private val callback: (model: ResultMoviesAndSeriesModel, view:RecyclerView) -> Unit =
+        { model, view ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                if (model.isFavorite) {
+
+                    dao?.deleteOne(model.id.toString())
+                } else {
+                    dao?.insertOne(
+                        FavoriteMovieDatabaseModel(
+                            model.id.toString(),
+                            model.name
+                        )
+                    )
+                }
+            }
+            (view.adapter as? MovieAdapter)?.modifyOneElement(model)
+        }
+
+    private fun initView() {
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            val response =
+                apolloClient.query(ShipsQuery()).execute()
+            showGallery(TheMovieDBRepository().getTrendingMoviesAndSeries().results)
+            showStars(TheMovieDBRepository().getPopularPeople().results)
+            showMovies(
+                TheMovieDBRepository().getTopRatedMovies().results,
+                binding.ratedMoviesRecycleView
+            )
+            showMovies(
+                TheMovieDBRepository().getPopularMovies().results,
+                binding.popularMoviesRecycleView
+            )
+            showMovies(
+                TheMovieDBRepository().getAiringTodayMovies().results,
+                binding.airingMoviesRecycleView
+            )
+            showShips(response.data?.launchLatest?.ships as List<ShipsQuery.Ship>)
+        }
 
     }
-
 
     private fun showShips(shipsList: List<ShipsQuery.Ship>) {
         val adapter = ShipsListAdapter()
@@ -128,19 +130,15 @@ class SecondFragment : Fragment() {
 
     private fun showMovies(
         moviesList: List<ResultMoviesAndSeriesModel>,
-        callback: (model: ResultMoviesAndSeriesModel, isFavorite: Boolean) -> Unit,
         recyclerView: RecyclerView
     ) {
-        val adapter = MovieAdapter(callback)
+        val adapter = MovieAdapter{model -> callback(model,recyclerView)  }
         lifecycleScope.launch(Dispatchers.IO) {
-            val dao = context?.let {
-                FavoriteMovieDatabaseInstance.getDatabase(it.applicationContext)?.getMovieDao()
-            }
-            for (movie in moviesList) {
-                val favoriteMovie = dao?.queryAfterId(movie.id.toString())
-                if (favoriteMovie != null)
-                    movie.isFavorite = true
-
+            moviesList.map { movie ->
+                dao?.queryAfterId(movie.id.toString())?.let {
+                    return@map movie.copy(isFavorite = true)
+                }
+                return@map movie
             }
             lifecycleScope.launch(Dispatchers.Main) {
                 adapter.list = moviesList

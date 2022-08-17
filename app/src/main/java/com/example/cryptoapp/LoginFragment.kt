@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.databinding.FragmentLoginBinding
+import com.example.cryptoapp.viewModels.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -14,6 +17,8 @@ import kotlinx.coroutines.launch
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class LoginFragment : Fragment() {
+    private val viewModel by viewModels<LoginViewModel>()
+
     private var _binding: FragmentLoginBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -21,7 +26,8 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,37 +35,35 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        //viewModel.username.value = ""
         binding.loginButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                TheMovieDBRepository().apply {
-                    println("SUNT AICI")
-                    val username = binding.textInputEditText.text.toString()
-                    val password = binding.passwordText.text.toString()
-                    val token = requestToken()
-                    println(token)
-                    val credentials =
-                        CredentialsModel("bogdipetrisor123", "parola123", token.requestToken)
-                    val login = login(credentials)
-                    println(login)
-                    if (login.success) {
-                       //daca id exista in db sa nu faca nimic
-                        //daca nu sa creeze un camp nou
-                        val homeScreenFragment = SecondFragment()
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.replace(
-                                R.id.fragment_container_view_tag,
-                                homeScreenFragment,
-                                "findThisFragment"
-                            )
-                            ?.addToBackStack(null)
-                            ?.commit()
-                    }
-                    val sessionId = sessionId(login)
-                    println(sessionId)
-                    val delete = deleteSession(sessionId)
-                    println(delete)
+                //TheMovieDBRepository().apply {
+                val nameObserver = Observer<String> { newName ->
+                    // Update the UI, in this case, a TextView.
+
                 }
+
+                // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+
+//                    val username = binding.textInputEditText.text.toString()
+//                    val password = binding.passwordText.text.toString()
+//                    val credentials =
+//                        CredentialsModel("bogdipetrisor123", "parola123", requestToken().requestToken)
+//                    val login = login(credentials)
+//                    if (login.success) {
+//                        val homeScreenFragment = SecondFragment()
+//                        activity?.supportFragmentManager?.beginTransaction()?.apply {
+//                        }
+//                            ?.replace(
+//                                R.id.fragment_container_view_tag,
+//                                homeScreenFragment,
+//                                "findThisFragment"
+//                            )
+//                            ?.addToBackStack(null)
+//                            ?.commit()
+//                    }
+                //}
             }
         }
     }

@@ -8,11 +8,12 @@ import com.example.cryptoapp.databinding.ActivityCoinDetailsBinding
 
 
 class CoinDetailsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCoinDetailsBinding
+    private val binding: ActivityCoinDetailsBinding by lazy {
+        ActivityCoinDetailsBinding.inflate(layoutInflater)
+    }
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCoinDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val coinId = intent.getStringExtra(EXTRA_ID)
         val coin = coinId?.let { FilesUtils.getCoinByID(this, coinId.replace("-","_")) }

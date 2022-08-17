@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.GalleryItemBinding
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
@@ -28,21 +29,16 @@ class ViewPageAdapter : ListAdapter<ResultMoviesAndSeriesModel, ViewPageAdapter.
         RecyclerView.ViewHolder(binding.root) {
         fun binding(model: ResultMoviesAndSeriesModel) {
             try {
-                val releaseDate = LocalDate.parse(model.releaseDate)
-                val today = LocalDate.now().minusMonths(2)
-                if (releaseDate.isAfter(today)) {
-                    binding.cinemaImage.text = "Coming soon"
-                } else binding.cinemaImage.text = "Out in cinemas"
-                Glide.with(binding.root.context)
-                    .load(model.galleryPath)
-                    .into(binding.image)
+                if (LocalDate.parse(model.releaseDate).isAfter(LocalDate.now().minusMonths(2))) {
+                    binding.cinemaImage.text = binding.root.context.getString(R.string.coming_soon)
+                } else binding.cinemaImage.text =
+                    binding.root.context.getString(R.string.out_in_cinemas)
             } catch (ex: DateTimeParseException) {
-                binding.cinemaImage.text = "No released date"
-                Glide.with(binding.root.context)
-                    .load(model.galleryPath)
-                    .into(binding.image)
-
+                binding.cinemaImage.text = binding.root.context.getString(R.string.no_released_date)
             }
+            Glide.with(binding.root.context)
+                .load(model.galleryPath)
+                .into(binding.image)
         }
     }
 

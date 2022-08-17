@@ -7,14 +7,17 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
+
+
 class TheMovieDBRepository {
+    private val json = Json {
+        coerceInputValues = true
+        ignoreUnknownKeys = true
+    }
     val apiKey = "96d31308896f028f63b8801331250f03"
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org")
-        .addConverterFactory(Json {
-            coerceInputValues = true
-            ignoreUnknownKeys = true
-        }.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
     val service = retrofit.create(TheMovieDBService::class.java)
@@ -55,7 +58,7 @@ class TheMovieDBRepository {
         return service.getAiringTodayMovies("en-US", 1, apiKey)
     }
 
-    suspend fun getSearchMovies(query: String, page: Int): TrendingMoviesModel{
+    suspend fun  getSearchMovies(query: String, page: Int): TrendingMoviesModel{
         return service.searchMovies(apiKey,"en-US",page, query)
     }
 

@@ -36,4 +36,8 @@
     <string name="star_image">star image</string>
     <string name="ships">Ships</string>
     <string name="cinema_image">cinema image</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="out_in_cinemas">Out in cinemas</string>
+    <string name="no_released_date">No released date</string>
+
 </resources>

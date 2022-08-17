@@ -15,5 +15,8 @@
     <color name="secondaryDarkColor">#ccc0ae</color>
     <color name="primaryTextColor">#2196f3</color>
     <color name="secondaryTextColor">#e64a19</color>
+    <color name="borderColor">#F5A431</color>
+    <color name="transparentColor">#00000000</color>
+
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#FFFFFF</color>
 </resources>

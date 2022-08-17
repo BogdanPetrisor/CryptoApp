@@ -11,7 +11,7 @@
         android:layout_height="229dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <!--TODO: make padding end-->
     <TextView
         android:id="@+id/cinema_image"
         android:contentDescription="@string/cinema_image"
