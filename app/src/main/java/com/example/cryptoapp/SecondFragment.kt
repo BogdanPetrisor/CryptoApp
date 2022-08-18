@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -14,6 +15,7 @@ import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.movie.*
 import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.ships.ShipsListAdapter
+import com.example.cryptoapp.viewModels.HomeScreenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
  */
 @Suppress("UNCHECKED_CAST")
 class SecondFragment : Fragment() {
+    private val viewModel: HomeScreenViewModel by viewModels()
     private var _binding: FragmentHomeScreenBinding? = null
     private val binding get() = _binding!!
     private val dao: FavoriteMovieDao? by lazy {
@@ -51,7 +54,8 @@ class SecondFragment : Fragment() {
                 ?.commit()
         }
     }
-    private val callback: (model: ResultMoviesAndSeriesModel, view:RecyclerView) -> Unit =
+
+    private val callback: (model: ResultMoviesAndSeriesModel, view: RecyclerView) -> Unit =
         { model, view ->
             lifecycleScope.launch(Dispatchers.IO) {
                 if (model.isFavorite) {
@@ -70,39 +74,29 @@ class SecondFragment : Fragment() {
         }
 
     private fun initView() {
-
-        lifecycleScope.launch(Dispatchers.Main) {
-            val response =
-                apolloClient.query(ShipsQuery()).execute()
-            showGallery(TheMovieDBRepository().getTrendingMoviesAndSeries().results)
-            showStars(TheMovieDBRepository().getPopularPeople().results)
-            showMovies(
-                TheMovieDBRepository().getTopRatedMovies().results,
-                binding.ratedMoviesRecycleView
-            )
-            showMovies(
-                TheMovieDBRepository().getPopularMovies().results,
-                binding.popularMoviesRecycleView
-            )
-            showMovies(
-                TheMovieDBRepository().getAiringTodayMovies().results,
-                binding.airingMoviesRecycleView
-            )
-            showShips(response.data?.launchLatest?.ships as List<ShipsQuery.Ship>)
-        }
-
+        showGallery()
+        showStars()
+        showTopRatedMovies()
+        showAiringTodayMovies()
+        showPopularMovies()
+        showShips()
     }
 
-    private fun showShips(shipsList: List<ShipsQuery.Ship>) {
+    private fun showShips() {
         val adapter = ShipsListAdapter()
-        adapter.list = shipsList
+        viewModel.ships.observe(viewLifecycleOwner) { ships ->
+            adapter.list = ships
+        }
         binding.shipsRecycleView.adapter = adapter
     }
 
-    private fun showGallery(galleryList: List<ResultMoviesAndSeriesModel>) {
-        binding.viewPager.adapter = ViewPageAdapter().apply {
-            submitList(galleryList)
+    private fun showGallery() {
+        viewModel.galleryMovies.observe(viewLifecycleOwner) { gallery ->
+            binding.viewPager.adapter = ViewPageAdapter().apply {
+                submitList(gallery)
+            }
         }
+
 
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -122,30 +116,36 @@ class SecondFragment : Fragment() {
         binding.indicator.notifyDataChanged()
     }
 
-    private fun showStars(starList: List<ResultPopularPeopleModel>) {
+    private fun showStars() {
         val adapter = StarsAdapter()
-        adapter.submitList(starList)
+        viewModel.movieStars.observe(viewLifecycleOwner) { stars ->
+            adapter.submitList(stars)
+        }
         binding.starsRecycleView.adapter = adapter
     }
 
-    private fun showMovies(
-        moviesList: List<ResultMoviesAndSeriesModel>,
-        recyclerView: RecyclerView
-    ) {
-        val adapter = MovieAdapter{model -> callback(model,recyclerView)  }
-        lifecycleScope.launch(Dispatchers.IO) {
-            moviesList.map { movie ->
-                dao?.queryAfterId(movie.id.toString())?.let {
-                    return@map movie.copy(isFavorite = true)
-                }
-                return@map movie
-            }
-            lifecycleScope.launch(Dispatchers.Main) {
-                adapter.list = moviesList
-                recyclerView.adapter = adapter
-            }
+    private fun showTopRatedMovies() {
+        val adapter = MovieAdapter { model -> callback(model, binding.ratedMoviesRecycleView) }
+        viewModel.topRatedMovies.observe(viewLifecycleOwner) { movies ->
+            adapter.list = movies
         }
+        binding.ratedMoviesRecycleView.adapter = adapter
+    }
 
+    private fun showPopularMovies() {
+        val adapter = MovieAdapter { model -> callback(model, binding.popularMoviesRecycleView) }
+        viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
+            adapter.list = movies
+        }
+        binding.popularMoviesRecycleView.adapter = adapter
+    }
+
+    private fun showAiringTodayMovies() {
+        val adapter = MovieAdapter { model -> callback(model, binding.airingMoviesRecycleView) }
+        viewModel.airingTodayMovies.observe(viewLifecycleOwner) { movies ->
+            adapter.list = movies
+        }
+        binding.airingMoviesRecycleView.adapter = adapter
     }
 
 

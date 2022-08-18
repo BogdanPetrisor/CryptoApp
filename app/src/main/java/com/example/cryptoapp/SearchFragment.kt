@@ -55,46 +55,6 @@ class SearchFragment : Fragment() {
                         }
                     }
                 }
-            val sharedPref = activity?.getSharedPreferences("searchMovie", Context.MODE_PRIVATE)
-            val editor = sharedPref?.edit()
-
-            searchView.setOnQueryTextListener(object :
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-
-                    editor?.apply {
-                        //TODO: you do not need builde variable and text and list
-                        val builder: StringBuilder = StringBuilder(sharedPref.getString("TEXT", ""))
-                        val text = builder.append("$query/")
-                        putString("text", text.toString())
-                        val list: MutableList<String> = text.split("/") as MutableList<String>
-                        list.reverse()
-                        println(list)
-                        commit()
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText != null) {
-                        if (newText.isNotEmpty()) {
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                delay(1000)
-                                //TODO: ROBERT SEARCH
-                                val searchedMovies = getSearchMovies(
-                                    newText,
-                                    1
-                                ).results.plus(getSearchMovies(newText, 2).results)
-                                launch(Dispatchers.Main) {
-                                    showSearchedMovies(searchedMovies, callback)
-                                }
-                            }
-                        }
-                    }
-                    return false
-                }
-            })
-
         }
     }
 

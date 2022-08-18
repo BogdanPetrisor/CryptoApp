@@ -12,6 +12,7 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.viewModels.LoginViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
+    private var _binding: FragmentHomeScreenBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,4 +66,8 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
