@@ -1,27 +1,25 @@
 package com.example.cryptoapp
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cryptoapp.persistence.FavoriteMovieDatabaseInstance
-import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
 import com.example.cryptoapp.databinding.FragmentSearchBinding
 import com.example.cryptoapp.movie.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.cryptoapp.persistence.FavoriteMovieDao
+import com.example.cryptoapp.viewModels.SearchMovieViewModel
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val dao: FavoriteMovieDao? by lazy {
+        FavoriteMovieDatabaseInstance.getDatabase(requireContext())?.getMovieDao()
+    }
+    private val viewModel: SearchMovieViewModel by viewModels()
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,54 +31,46 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO: fun with functions
-        TheMovieDBRepository().apply {
-            val searchView: androidx.appcompat.widget.SearchView = binding.searchView
-            val dao = context?.let {
-                FavoriteMovieDatabaseInstance.getDatabase(it.applicationContext)?.getMovieDao()
+        val searchView: androidx.appcompat.widget.SearchView = binding.searchView
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                TODO("Not yet implemented")
             }
 
-            val callback: (model: ResultMoviesAndSeriesModel) -> Unit =
-                { model: ResultMoviesAndSeriesModel->
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        if (!model.isFavorite) {
-                            dao?.insertOne(
-                                FavoriteMovieDatabaseModel(
-                                    id = model.id.toString(),
-                                    name = model.name
-                                )
-                            )
-                        } else {
-                            dao?.deleteOne(model.id.toString())
-                        }
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (query != null) {
+                    viewModel.getMoviesByQuery(query)
+                    viewModel.movies.observe(viewLifecycleOwner) { movies ->
+                        showSearchedMovies(
+                            movies
+                        )
                     }
+
                 }
-        }
+                return false
+            }
+
+        })
+
+
     }
 
     fun showSearchedMovies(
         moviesList: List<ResultMoviesAndSeriesModel>,
-        callback: (model: ResultMoviesAndSeriesModel) -> Unit
     ) {
-        val adapter = MovieAdapter(callback)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val dao = context?.let {
-                FavoriteMovieDatabaseInstance.getDatabase(it.applicationContext)?.getMovieDao()
-            }
-            //TODO: see robert's case
-            for (movie in moviesList) {
-                val favoriteMovie = dao?.queryAfterId(movie.id.toString())
-               // if (favoriteMovie != null)
-
-            }
-            lifecycleScope.launch(Dispatchers.Main) {
-                adapter.list = moviesList
-                val gridLayoutManager = GridLayoutManager(activity, 3)
-                binding.searchRecycleView.layoutManager = gridLayoutManager
-                binding.searchRecycleView.adapter = adapter
+        val adapter = MovieAdapter { model ->
+            dao?.let {
+                viewModel.callback(
+                    model, binding.searchRecycleView,
+                    it
+                )
             }
         }
-
+        adapter.list = moviesList
+        val gridLayoutManager = GridLayoutManager(activity, 3)
+        binding.searchRecycleView.layoutManager = gridLayoutManager
+        binding.searchRecycleView.adapter = adapter
     }
 
     override fun onDestroyView() {

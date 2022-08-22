@@ -41,7 +41,6 @@ data class ResultMoviesAndSeriesModel(
     val galleryPath: String = "https://image.tmdb.org/t/p/w500$backdropPath",
     @Transient
     val cardViewImagePath: String ="https://image.tmdb.org/t/p/w500$posterPath",
-    //TODO: make it vall , see Robert's case
     @Transient
     val isFavorite: Boolean = false
     )

@@ -1,17 +1,20 @@
 package com.example.cryptoapp.viewModels
 
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.ShipsQuery
 import com.example.cryptoapp.TheMovieDBRepository
 import com.example.cryptoapp.apolloClient
+import com.example.cryptoapp.movie.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.ResultPopularPeopleModel
+import com.example.cryptoapp.persistence.FavoriteMovieDao
+import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class HomeScreenViewModel : ViewModel() {
-
+class HomeScreenViewModel() : ViewModel() {
     private val mdbRepo = TheMovieDBRepository()
     private var job: Job = Job()
 
@@ -40,8 +43,8 @@ class HomeScreenViewModel : ViewModel() {
         get() = _ships
 
     private val _galleryMovies = MutableLiveData<List<ResultMoviesAndSeriesModel>>()
-    val galleryMovies : LiveData<List<ResultMoviesAndSeriesModel>>
-    get() = _galleryMovies
+    val galleryMovies: LiveData<List<ResultMoviesAndSeriesModel>>
+        get() = _galleryMovies
 
     private fun getMovies() {
         job.cancel()
@@ -56,6 +59,23 @@ class HomeScreenViewModel : ViewModel() {
             _galleryMovies.postValue(mdbRepo.getTrendingMoviesAndSeries().results)
         }
     }
+
+    val callback: (model: ResultMoviesAndSeriesModel, view: RecyclerView, dao: FavoriteMovieDao) -> Unit =
+        { model, view, dao ->
+            viewModelScope.launch(Dispatchers.IO) {
+                if (model.isFavorite) {
+                    dao.deleteOne(model.id.toString())
+                } else {
+                    dao.insertOne(
+                        FavoriteMovieDatabaseModel(
+                            model.id.toString(),
+                            model.name
+                        )
+                    )
+                }
+            }
+            (view.adapter as? MovieAdapter)?.modifyOneElement(model)
+        }
 
 }
 

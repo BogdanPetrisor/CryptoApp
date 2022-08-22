@@ -38,6 +38,7 @@ class MovieAdapter(private val callback: (model: ResultMoviesAndSeriesModel) -> 
                 true
             }
 
+
             if (model.voteAverage > 8) {
                 binding.mustWatchTv.visibility = View.VISIBLE
             } else {

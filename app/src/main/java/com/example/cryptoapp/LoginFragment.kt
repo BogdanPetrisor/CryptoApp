@@ -6,17 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.viewModels.LoginViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -60,9 +57,7 @@ class LoginFragment : Fragment() {
             LoginState.InProgress -> {
             }
             LoginState.Success ->
-                parentFragmentManager.beginTransaction()
-                    .replace<SecondFragment>(R.id.fragment_container_view_tag)
-                    .commit()
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }
 

@@ -39,5 +39,9 @@
     <string name="coming_soon">Coming soon</string>
     <string name="out_in_cinemas">Out in cinemas</string>
     <string name="no_released_date">No released date</string>
+    <string name="title">Title:</string>
+    <string name="overview">Overview:</string>
+    <string name="air_date">Air date:</string>
+    <string name="popularity">Popularity:</string>
 
 </resources>
