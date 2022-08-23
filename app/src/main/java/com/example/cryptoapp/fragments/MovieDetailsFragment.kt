@@ -36,22 +36,14 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.movieDetailsViewModel = viewModel
+        //TODO: metoda trebuie apelata in viewmodel
         viewModel.setMovie(movieId.toString())
-        setupViews()
+        setupMovieImage()
     }
-
-    fun setupViews(){
-        viewModel.title.observe(viewLifecycleOwner){
-            binding.title.text = it
-        }
-
-        viewModel.overview.observe(viewLifecycleOwner){
-            binding.overview.text = it
-        }
-
-        viewModel.popularity.observe(viewLifecycleOwner){
-            binding.popularity.text = it.toString()
-        }
+    //TODO: data binding
+    fun setupMovieImage(){
         viewModel.posterImage.observe(viewLifecycleOwner){
             Glide.with(binding.root.context)
                 .load(it)

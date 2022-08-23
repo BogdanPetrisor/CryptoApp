@@ -9,7 +9,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
 
-
+//TODO: cu injection val json si retrofit ( ambele sa fie intr o clasa API)
 class TheMovieDBRepository {
     private val json = Json {
         coerceInputValues = true
