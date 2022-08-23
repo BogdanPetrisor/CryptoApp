@@ -1,6 +1,7 @@
 package com.example.cryptoapp
 
 import com.example.cryptoapp.movie.PopularPeopleModel
+import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.TrendingMoviesModel
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -60,6 +61,10 @@ class TheMovieDBRepository {
 
     suspend fun  getSearchMovies(query: String, page: Int): TrendingMoviesModel{
         return service.searchMovies(apiKey,"en-US",page, query)
+    }
+
+    suspend fun getMovieById(id: String): ResultMoviesAndSeriesModel{
+        return service.getMovieById(id,apiKey)
     }
 
 

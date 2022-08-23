@@ -9,7 +9,10 @@ import com.bumptech.glide.Glide
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.MoviesItemBinding
 
-class MovieAdapter(private val callback: (model: ResultMoviesAndSeriesModel) -> Unit) :
+class MovieAdapter(
+    private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit,
+    private val clickCallback: (id: Int) -> Unit
+) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     var list = listOf<ResultMoviesAndSeriesModel>()
         set(value) {
@@ -28,14 +31,18 @@ class MovieAdapter(private val callback: (model: ResultMoviesAndSeriesModel) -> 
     }
 
     inner class MovieViewHolder(
-        private val callback: (model: ResultMoviesAndSeriesModel) -> Unit,
+        private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit,
+        private val clickCallback: (id: Int) -> Unit,
         private val binding: MoviesItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun binding(model: ResultMoviesAndSeriesModel) {
             setFavorite(model.isFavorite)
             binding.movieCardView.setOnLongClickListener {
-                callback(model)
+                longClickCallback(model)
                 true
+            }
+            binding.movieCardView.setOnClickListener {
+                clickCallback(model.id)
             }
 
 
@@ -65,7 +72,7 @@ class MovieAdapter(private val callback: (model: ResultMoviesAndSeriesModel) -> 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = MoviesItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(callback, view)
+        return MovieViewHolder(longClickCallback, clickCallback, view)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {

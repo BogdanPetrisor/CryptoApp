@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
+import com.example.cryptoapp.LoginState
+import com.example.cryptoapp.MovieApplication
+import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.viewModels.LoginViewModel
@@ -19,7 +20,11 @@ import com.example.cryptoapp.viewModels.LoginViewModel
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class LoginFragment : Fragment() {
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels {
+        LoginViewModel.LoginViewModelFactory(
+            requireContext().applicationContext as MovieApplication
+        )
+    }
     private lateinit var binding: FragmentLoginBinding
     private var _binding: FragmentHomeScreenBinding? = null
     override fun onCreateView(
@@ -57,7 +62,7 @@ class LoginFragment : Fragment() {
             LoginState.InProgress -> {
             }
             LoginState.Success ->
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }
 

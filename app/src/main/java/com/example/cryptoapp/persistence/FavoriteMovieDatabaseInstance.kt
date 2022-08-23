@@ -5,9 +5,9 @@ import androidx.room.Room
 
 object FavoriteMovieDatabaseInstance {
     private const val FAVORITES_MOVIES_DATABASE_TAG = "favorite_movies_database"
-    private var INSTANCE: FavoriteMovieRoomDatabase? = null
-    fun getDatabase(context: Context): FavoriteMovieRoomDatabase? {
-        if (INSTANCE == null) {
+    private lateinit var INSTANCE: FavoriteMovieRoomDatabase
+    fun getDatabase(context: Context): FavoriteMovieRoomDatabase {
+        if (!this::INSTANCE.isInitialized) {
                 INSTANCE =
                     Room.databaseBuilder(
                         context,
@@ -18,3 +18,4 @@ object FavoriteMovieDatabaseInstance {
         return INSTANCE
     }
 }
+

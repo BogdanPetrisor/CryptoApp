@@ -1,13 +1,9 @@
 package com.example.cryptoapp.viewModels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.ShipsQuery
+import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.TheMovieDBRepository
-import com.example.cryptoapp.apolloClient
 import com.example.cryptoapp.movie.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.persistence.FavoriteMovieDao
@@ -16,9 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SearchMovieViewModel : ViewModel() {
+class SearchMovieViewModel(
+    private val dao: FavoriteMovieDao,
+    private val movieRepository: TheMovieDBRepository
+) : ViewModel() {
 
-    private val mdbRepo = TheMovieDBRepository()
     private var job: Job = Job()
 
     private val _movies = MutableLiveData<List<ResultMoviesAndSeriesModel>>()
@@ -29,17 +27,16 @@ class SearchMovieViewModel : ViewModel() {
         job.cancel()
         if (query.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
-                val searchedMoviesPage1 = mdbRepo.getSearchMovies(query, 1).results
-                val searchedMoviesPage2 = mdbRepo.getSearchMovies(query, 2).results
+                val searchedMoviesPage1 = movieRepository.getSearchMovies(query, 1).results
+                val searchedMoviesPage2 = movieRepository.getSearchMovies(query, 2).results
                 val searchedMovies = searchedMoviesPage1.plus(searchedMoviesPage2)
                 _movies.postValue(searchedMovies)
-
             }
         }
     }
 
-    val callback: (model: ResultMoviesAndSeriesModel, view: RecyclerView, dao: FavoriteMovieDao) -> Unit =
-        { model, view, dao ->
+    val longClickCallback: (model: ResultMoviesAndSeriesModel, view: RecyclerView) -> Unit =
+        { model, view->
             viewModelScope.launch(Dispatchers.IO) {
                 if (model.isFavorite) {
                     dao.deleteOne(model.id.toString())
@@ -55,4 +52,13 @@ class SearchMovieViewModel : ViewModel() {
             (view.adapter as? MovieAdapter)?.modifyOneElement(model)
         }
 
+}
+
+class SearchMovieViewModelFactory(private val application: MovieApplication) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return SearchMovieViewModel(
+            application.dao,
+            application.movieRepository,
+        ) as T
+    }
 }

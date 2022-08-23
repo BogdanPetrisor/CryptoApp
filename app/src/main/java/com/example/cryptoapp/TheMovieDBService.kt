@@ -1,6 +1,7 @@
 package com.example.cryptoapp
 
 import com.example.cryptoapp.movie.PopularPeopleModel
+import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.TrendingMoviesModel
 import retrofit2.http.*
 
@@ -68,6 +69,13 @@ interface TheMovieDBService {
         @Query("page") page: Int,
         @Query("query") query: String
     ): TrendingMoviesModel
+
+    @GET("3/movie/{movie_id}")
+    suspend fun getMovieById(
+        @Path("movie_id") movieId: String,
+        @Query("api_key") apiKey: String
+
+    ): ResultMoviesAndSeriesModel
 
 
 }

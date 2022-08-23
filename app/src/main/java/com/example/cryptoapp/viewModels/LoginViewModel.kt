@@ -1,21 +1,20 @@
 package com.example.cryptoapp.viewModels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.cryptoapp.CredentialsModel
 import com.example.cryptoapp.LoginState
+import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.TheMovieDBRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val movieRepository: TheMovieDBRepository
+) : ViewModel() {
 
-    private val mdbRepo = TheMovieDBRepository()
     private var job: Job = Job()
 
     val username = MutableLiveData<String>()
@@ -48,10 +47,10 @@ class LoginViewModel : ViewModel() {
                 _state.postValue(LoginState.InProgress)
 
                 //Get new token
-                val token = mdbRepo.requestToken()
+                val token = movieRepository.requestToken()
 
                 //Login
-                mdbRepo.login(
+                movieRepository.login(
                     CredentialsModel(
                         usernameValue,
                         passwordValue,
@@ -67,6 +66,12 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
-
+    class LoginViewModelFactory(private val application: MovieApplication) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return LoginViewModel(
+                application.movieRepository
+            ) as T
+        }
+    }
 
 }

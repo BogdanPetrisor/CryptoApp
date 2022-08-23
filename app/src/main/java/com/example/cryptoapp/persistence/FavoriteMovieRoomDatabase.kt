@@ -12,5 +12,4 @@ abstract class FavoriteMovieRoomDatabase : RoomDatabase() {
 
     abstract fun getMovieDao(): FavoriteMovieDao
 
-
 }

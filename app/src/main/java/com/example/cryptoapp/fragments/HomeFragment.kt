@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,29 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.cryptoapp.persistence.FavoriteMovieDatabaseInstance
-import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
+import com.example.cryptoapp.MovieApplication
+import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.movie.*
-import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.ships.ShipsListAdapter
 import com.example.cryptoapp.viewModels.HomeScreenViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.cryptoapp.viewModels.HomeScreenViewModelFactory
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 @Suppress("UNCHECKED_CAST")
 class HomeFragment : Fragment() {
-    private val dao: FavoriteMovieDao? by lazy {
-        FavoriteMovieDatabaseInstance.getDatabase(requireContext())?.getMovieDao()
+
+    private val viewModel: HomeScreenViewModel by viewModels {
+        HomeScreenViewModelFactory(
+            requireContext().applicationContext as MovieApplication
+        )
     }
-    private val viewModel: HomeScreenViewModel by viewModels()
     private var _binding: FragmentHomeScreenBinding? = null
     private val binding get() = _binding!!
 
@@ -43,28 +38,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         initView()
         binding.searchButton.setOnClickListener {
-         findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
     }
-
-//    private val callback: (model: ResultMoviesAndSeriesModel, view: RecyclerView) -> Unit =
-//        { model, view ->
-//            lifecycleScope.launch(Dispatchers.IO) {
-//                if (model.isFavorite) {
-//                    dao?.deleteOne(model.id.toString())
-//                } else {
-//                    dao?.insertOne(
-//                        FavoriteMovieDatabaseModel(
-//                            model.id.toString(),
-//                            model.name
-//                        )
-//                    )
-//                }
-//            }
-//            (view.adapter as? MovieAdapter)?.modifyOneElement(model)
-//        }
 
     private fun initView() {
         showGallery()
@@ -118,11 +98,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun showTopRatedMovies() {
-        val adapter = MovieAdapter { model -> dao?.let {
-            viewModel.callback(model, binding.ratedMoviesRecycleView,
-                it
-            )
-        } }
+        val adapter = MovieAdapter(
+            { model -> viewModel.longClickCallback(model, binding.ratedMoviesRecycleView) },
+            { id -> clickCallback(id) }
+        )
         viewModel.topRatedMovies.observe(viewLifecycleOwner) { movies ->
             adapter.list = movies
         }
@@ -130,11 +109,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun showPopularMovies() {
-        val adapter = MovieAdapter { model -> dao?.let {
-            viewModel.callback(model, binding.popularMoviesRecycleView,
-                it
-            )
-        } }
+        val adapter = MovieAdapter(
+            { model -> viewModel.longClickCallback(model, binding.popularMoviesRecycleView)},
+            { id -> clickCallback(id) }
+        )
         viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
             adapter.list = movies
         }
@@ -142,17 +120,23 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAiringTodayMovies() {
-        val adapter = MovieAdapter { model -> dao?.let {
-            viewModel.callback(model, binding.airingMoviesRecycleView,
-                it
-            )
-        } }
+        val adapter = MovieAdapter(
+            { model -> viewModel.longClickCallback(model, binding.airingMoviesRecycleView)},
+            { id -> clickCallback(id) }
+        )
         viewModel.airingTodayMovies.observe(viewLifecycleOwner) { movies ->
             adapter.list = movies
         }
         binding.airingMoviesRecycleView.adapter = adapter
     }
 
+    val clickCallback: (id: Int) -> Unit = { id ->
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToMovieDetailsFragment(
+                id
+            )
+        )
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
