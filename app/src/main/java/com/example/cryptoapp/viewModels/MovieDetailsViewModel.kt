@@ -1,14 +1,15 @@
 package com.example.cryptoapp.viewModels
 
 import androidx.lifecycle.*
-import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.TheMovieDBRepository
-import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieDetailsViewModel(
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
     private val movieRepository: TheMovieDBRepository
 ) : ViewModel() {
 
@@ -45,9 +46,4 @@ class MovieDetailsViewModel(
 
     }
 }
-    class MovieDetailsViewModelFactory(private val application: MovieApplication) :
-        ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MovieDetailsViewModel(application.movieRepository) as T
-        }
-    }
+

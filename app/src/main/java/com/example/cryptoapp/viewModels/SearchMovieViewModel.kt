@@ -8,11 +8,14 @@ import com.example.cryptoapp.movie.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchMovieViewModel(
+@HiltViewModel
+class SearchMovieViewModel @Inject constructor(
     private val dao: FavoriteMovieDao,
     private val movieRepository: TheMovieDBRepository
 ) : ViewModel() {
@@ -52,13 +55,4 @@ class SearchMovieViewModel(
             (view.adapter as? MovieAdapter)?.modifyOneElement(model)
         }
 
-}
-
-class SearchMovieViewModelFactory(private val application: MovieApplication) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SearchMovieViewModel(
-            application.dao,
-            application.movieRepository,
-        ) as T
-    }
 }

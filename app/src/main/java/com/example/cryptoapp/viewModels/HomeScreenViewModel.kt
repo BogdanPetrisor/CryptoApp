@@ -11,11 +11,14 @@ import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.ResultPopularPeopleModel
 import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeScreenViewModel(
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(
     private val dao: FavoriteMovieDao,
     private val movieRepository: TheMovieDBRepository
 ) : ViewModel() {
@@ -78,17 +81,12 @@ class HomeScreenViewModel(
             }
             (view.adapter as? MovieAdapter)?.modifyOneElement(model)
         }
-
-}
-
-class HomeScreenViewModelFactory(private val application: MovieApplication) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HomeScreenViewModel(
-            application.dao,
-            application.movieRepository,
-        ) as T
+    fun setId(id: String){
+        movieRepository.movieId = id
     }
+
 }
+
 
 
 

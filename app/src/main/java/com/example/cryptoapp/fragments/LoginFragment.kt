@@ -10,21 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cryptoapp.LoginState
-import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.viewModels.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
-    private val viewModel: LoginViewModel by viewModels {
-        LoginViewModel.LoginViewModelFactory(
-            requireContext().applicationContext as MovieApplication
-        )
-    }
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
     private var _binding: FragmentHomeScreenBinding? = null
     override fun onCreateView(

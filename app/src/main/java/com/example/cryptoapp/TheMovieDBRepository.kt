@@ -7,10 +7,14 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
 //TODO: cu injection val json si retrofit ( ambele sa fie intr o clasa API)
-class TheMovieDBRepository {
+
+@Singleton
+class TheMovieDBRepository @Inject constructor() {
     private val json = Json {
         coerceInputValues = true
         ignoreUnknownKeys = true
@@ -22,7 +26,7 @@ class TheMovieDBRepository {
         .build()
 
     val service = retrofit.create(TheMovieDBService::class.java)
-
+    lateinit var movieId: String
     suspend fun requestToken(): TokenModel {
         return service.getToken(apiKey)
     }
@@ -59,12 +63,16 @@ class TheMovieDBRepository {
         return service.getAiringTodayMovies("en-US", 1, apiKey)
     }
 
-    suspend fun  getSearchMovies(query: String, page: Int): TrendingMoviesModel{
-        return service.searchMovies(apiKey,"en-US",page, query)
+    suspend fun getSearchMovies(query: String, page: Int): TrendingMoviesModel {
+        return service.searchMovies(apiKey, "en-US", page, query)
     }
 
-    suspend fun getMovieById(id: String): ResultMoviesAndSeriesModel{
-        return service.getMovieById(id,apiKey)
+    suspend fun getMovieById(id: String): ResultMoviesAndSeriesModel {
+        return service.getMovieById(id, apiKey)
+    }
+
+    suspend fun saveMovieId(id: String) {
+        movieId = id
     }
 
 

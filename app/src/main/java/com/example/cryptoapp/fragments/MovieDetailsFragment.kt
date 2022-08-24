@@ -8,19 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.databinding.FragmentMovieDetailsBinding
-import com.example.cryptoapp.movie.MovieAdapter
-import com.example.cryptoapp.viewModels.HomeScreenViewModel
 import com.example.cryptoapp.viewModels.MovieDetailsViewModel
-import com.example.cryptoapp.viewModels.MovieDetailsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
-    private val viewModel: MovieDetailsViewModel by viewModels{
-        MovieDetailsViewModelFactory(
-            requireContext().applicationContext as MovieApplication
-        )
-    }
+    private val viewModel: MovieDetailsViewModel by viewModels()
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
     private var movieId: Int = 0
@@ -42,7 +36,7 @@ class MovieDetailsFragment : Fragment() {
         viewModel.setMovie(movieId.toString())
         setupMovieImage()
     }
-    //TODO: data binding
+
     fun setupMovieImage(){
         viewModel.posterImage.observe(viewLifecycleOwner){
             Glide.with(binding.root.context)

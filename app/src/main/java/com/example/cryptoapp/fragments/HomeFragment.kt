@@ -14,16 +14,13 @@ import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.movie.*
 import com.example.cryptoapp.ships.ShipsListAdapter
 import com.example.cryptoapp.viewModels.HomeScreenViewModel
-import com.example.cryptoapp.viewModels.HomeScreenViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("UNCHECKED_CAST")
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeScreenViewModel by viewModels {
-        HomeScreenViewModelFactory(
-            requireContext().applicationContext as MovieApplication
-        )
-    }
+    private val viewModel: HomeScreenViewModel by viewModels()
     private var _binding: FragmentHomeScreenBinding? = null
     private val binding get() = _binding!!
 
@@ -108,7 +105,7 @@ class HomeFragment : Fragment() {
 
     private fun showPopularMovies() {
         val adapter = MovieAdapter(
-            { model -> viewModel.longClickCallback(model, binding.popularMoviesRecycleView)},
+            { model -> viewModel.longClickCallback(model, binding.popularMoviesRecycleView) },
             { id -> clickCallback(id) }
         )
         viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
@@ -119,7 +116,7 @@ class HomeFragment : Fragment() {
 
     private fun showAiringTodayMovies() {
         val adapter = MovieAdapter(
-            { model -> viewModel.longClickCallback(model, binding.airingMoviesRecycleView)},
+            { model -> viewModel.longClickCallback(model, binding.airingMoviesRecycleView) },
             { id -> clickCallback(id) }
         )
         viewModel.airingTodayMovies.observe(viewLifecycleOwner) { movies ->

@@ -8,18 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.databinding.FragmentSearchBinding
 import com.example.cryptoapp.movie.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.viewModels.SearchMovieViewModel
-import com.example.cryptoapp.viewModels.SearchMovieViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
-    private val viewModel: SearchMovieViewModel by viewModels {
-        SearchMovieViewModelFactory(requireContext().applicationContext as MovieApplication)
-    }
+    private val viewModel: SearchMovieViewModel by viewModels()
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
