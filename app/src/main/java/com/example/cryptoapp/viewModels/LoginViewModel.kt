@@ -27,6 +27,15 @@ class LoginViewModel @Inject constructor(
     val state: LiveData<LoginState>
         get() = _state
 
+    fun checkIfUserIsLoggedIn() {
+        job.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            if (userRepository.isUserLogged()) {
+                _state.postValue(LoginState.Success)
+            }
+        }
+    }
+
     fun doLogin() {
 
         val usernameValue = username.value
@@ -53,13 +62,14 @@ class LoginViewModel @Inject constructor(
                 val token = userRepository.requestToken()
 
                 //Login
-                userRepository.login(
+                val login = userRepository.login(
                     CredentialsModel(
                         usernameValue,
                         passwordValue,
                         token.requestToken
                     )
                 )
+                userRepository.sessionId(login)
 
                 _state.postValue(LoginState.Success)
 

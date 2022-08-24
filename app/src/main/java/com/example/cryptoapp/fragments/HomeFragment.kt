@@ -42,6 +42,10 @@ class HomeFragment : Fragment() {
         binding.searchButton.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
+        binding.userImageView.setOnClickListener {
+            viewModel.doLogout()
+            findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+        }
     }
 
     private fun initView() {
