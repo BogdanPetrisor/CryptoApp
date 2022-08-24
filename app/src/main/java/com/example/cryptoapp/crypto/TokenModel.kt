@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.crypto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

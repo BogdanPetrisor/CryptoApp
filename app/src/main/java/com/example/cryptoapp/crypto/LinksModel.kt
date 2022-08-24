@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.crypto
 
 data class LinksModel(
     val explorer: List<String> = emptyList(),

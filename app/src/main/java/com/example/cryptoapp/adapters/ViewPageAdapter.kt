@@ -1,13 +1,16 @@
-package com.example.cryptoapp.movie
+package com.example.cryptoapp.adapters
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.GalleryItemBinding
+import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
@@ -27,6 +30,7 @@ class ViewPageAdapter : ListAdapter<ResultMoviesAndSeriesModel, ViewPageAdapter.
 
     inner class ResultViewHolder(private val binding: GalleryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun binding(model: ResultMoviesAndSeriesModel) {
             try {
                 if (LocalDate.parse(model.releaseDate).isAfter(LocalDate.now().minusMonths(2))) {
@@ -47,6 +51,7 @@ class ViewPageAdapter : ListAdapter<ResultMoviesAndSeriesModel, ViewPageAdapter.
         return ResultViewHolder(view)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         holder.binding(getItem(position))
     }

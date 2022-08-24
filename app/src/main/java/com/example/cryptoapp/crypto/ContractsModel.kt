@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.crypto
 
 data class ContractsModel(
     val contract: String="",

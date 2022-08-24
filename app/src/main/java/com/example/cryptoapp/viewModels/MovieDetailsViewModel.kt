@@ -1,7 +1,7 @@
 package com.example.cryptoapp.viewModels
 
 import androidx.lifecycle.*
-import com.example.cryptoapp.TheMovieDBRepository
+import com.example.cryptoapp.repository.TheMovieDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

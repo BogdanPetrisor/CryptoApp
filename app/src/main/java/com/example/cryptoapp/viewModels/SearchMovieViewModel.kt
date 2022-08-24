@@ -2,9 +2,8 @@ package com.example.cryptoapp.viewModels
 
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.MovieApplication
-import com.example.cryptoapp.TheMovieDBRepository
-import com.example.cryptoapp.movie.MovieAdapter
+import com.example.cryptoapp.repository.TheMovieDBRepository
+import com.example.cryptoapp.adapters.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel

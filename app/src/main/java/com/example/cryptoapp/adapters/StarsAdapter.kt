@@ -1,4 +1,4 @@
-package com.example.cryptoapp.movie
+package com.example.cryptoapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoapp.databinding.StarsItemBinding
+import com.example.cryptoapp.movie.ResultPopularPeopleModel
 
 class StarsAdapter : ListAdapter<ResultPopularPeopleModel, StarsAdapter.ResultViewHolder>(
     object :

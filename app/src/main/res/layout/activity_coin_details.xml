@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:padding="30dp"
-    tools:context=".CoinDetailsActivity">
+    tools:context=".crypto.CoinDetailsActivity">
 
     <TextView
         android:id="@+id/tvTitle"

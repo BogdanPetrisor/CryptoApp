@@ -1,4 +1,4 @@
-package com.example.cryptoapp.movie
+package com.example.cryptoapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.MoviesItemBinding
+import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 
 class MovieAdapter(
     private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit,

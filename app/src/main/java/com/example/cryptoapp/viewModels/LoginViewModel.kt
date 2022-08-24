@@ -4,7 +4,8 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.cryptoapp.CredentialsModel
 import com.example.cryptoapp.LoginState
-import com.example.cryptoapp.TheMovieDBRepository
+import com.example.cryptoapp.repository.TheMovieDBRepository
+import com.example.cryptoapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val movieRepository: TheMovieDBRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private var job: Job = Job()
@@ -49,10 +50,10 @@ class LoginViewModel @Inject constructor(
                 _state.postValue(LoginState.InProgress)
 
                 //Get new token
-                val token = movieRepository.requestToken()
+                val token = userRepository.requestToken()
 
                 //Login
-                movieRepository.login(
+                userRepository.login(
                     CredentialsModel(
                         usernameValue,
                         passwordValue,

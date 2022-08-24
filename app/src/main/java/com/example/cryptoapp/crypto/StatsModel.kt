@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.crypto
 
 data class StatsModel(
     val contributors: Double = 0.0,

@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cryptoapp.databinding.FragmentSearchBinding
-import com.example.cryptoapp.movie.MovieAdapter
+import com.example.cryptoapp.adapters.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.viewModels.SearchMovieViewModel
 import dagger.hilt.android.AndroidEntryPoint

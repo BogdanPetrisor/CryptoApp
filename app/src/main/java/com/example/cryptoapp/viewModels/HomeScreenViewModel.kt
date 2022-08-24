@@ -2,11 +2,10 @@ package com.example.cryptoapp.viewModels
 
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.MovieApplication
 import com.example.cryptoapp.ShipsQuery
-import com.example.cryptoapp.TheMovieDBRepository
+import com.example.cryptoapp.repository.TheMovieDBRepository
 import com.example.cryptoapp.apolloClient
-import com.example.cryptoapp.movie.MovieAdapter
+import com.example.cryptoapp.adapters.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.ResultPopularPeopleModel
 import com.example.cryptoapp.persistence.FavoriteMovieDao
@@ -65,8 +64,8 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-    val longClickCallback: (model: ResultMoviesAndSeriesModel, view: RecyclerView) -> Unit =
-        { model, view ->
+    val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit =
+        { model ->
             viewModelScope.launch(Dispatchers.IO) {
                 if (model.isFavorite) {
                     dao.deleteOne(model.id.toString())
@@ -79,7 +78,6 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 }
             }
-            (view.adapter as? MovieAdapter)?.modifyOneElement(model)
         }
     fun setId(id: String){
         movieRepository.movieId = id

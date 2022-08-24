@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.crypto
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -16,7 +16,7 @@ class CoinDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val coinId = intent.getStringExtra(EXTRA_ID)
-        val coin = coinId?.let { FilesUtils.getCoinByID(this, coinId.replace("-","_")) }
+        val coin = coinId?.let { FilesUtils.getCoinByID(this, coinId.replace("-", "_")) }
         binding.tvTitle.text = "${coin?.rank}. ${coin?.name} \n(${coin?.symbol})"
         when(coin?.isActive){
             true->binding.tvIsActive.text = "active"

@@ -29,11 +29,11 @@
         </activity>
 
         <activity
-            android:name=".CoinDetailsActivity"
+            android:name=".crypto.CoinDetailsActivity"
             android:exported="false"
-            android:parentActivityName=".CoinsActivity" />
+            android:parentActivityName=".crypto.CoinsActivity" />
         <activity
-            android:name=".CoinsActivity"
+            android:name=".crypto.CoinsActivity"
             android:exported="true" />
 
         <meta-data

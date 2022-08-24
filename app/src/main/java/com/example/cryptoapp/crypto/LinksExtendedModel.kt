@@ -1,4 +1,6 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.crypto
+
+import com.example.cryptoapp.crypto.StatsModel
 
 data class LinksExtendedModel(
     val url: String = "",
