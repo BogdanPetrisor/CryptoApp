@@ -10,6 +10,7 @@ import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.ResultPopularPeopleModel
 import com.example.cryptoapp.persistence.FavoriteMovieDao
 import com.example.cryptoapp.persistence.FavoriteMovieDatabaseModel
+import com.example.cryptoapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val dao: FavoriteMovieDao,
-    private val movieRepository: TheMovieDBRepository
+    private val movieRepository: TheMovieDBRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private var job: Job = Job()
     init {
@@ -64,6 +66,10 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
+    fun doLogout(){
+        userRepository.logoutUser()
+    }
+
     val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit =
         { model ->
             viewModelScope.launch(Dispatchers.IO) {
@@ -79,9 +85,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             }
         }
-    fun setId(id: String){
-        movieRepository.movieId = id
-    }
+
 
 }
 

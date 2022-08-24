@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
-    private var _binding: FragmentHomeScreenBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +35,9 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.loginViewModel = viewModel
+        if (viewModel.checkIfUserIsLoggedIn()){
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        }
         binding.loginButton.setOnClickListener {
             viewModel.doLogin()
         }
@@ -42,6 +45,7 @@ class LoginFragment : Fragment() {
             loginStateObserver(state)
 
         }
+
     }
 
     private fun loginStateObserver(state: LoginState) {
