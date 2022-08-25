@@ -1,8 +1,5 @@
 package com.example.cryptoapp.service
 
-import com.example.cryptoapp.CredentialsModel
-import com.example.cryptoapp.SessionModel
-import com.example.cryptoapp.crypto.TokenModel
 import com.example.cryptoapp.movie.PopularPeopleModel
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.movie.TrendingMoviesModel
@@ -53,7 +50,7 @@ interface TheMovieDBService {
 
     @GET("3/movie/{movie_id}")
     suspend fun getMovieById(
-        @Path("movie_id") movieId: String,
+        @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
 
     ): ResultMoviesAndSeriesModel

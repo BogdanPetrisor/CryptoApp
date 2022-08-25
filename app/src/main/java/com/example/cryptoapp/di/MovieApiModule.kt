@@ -14,33 +14,20 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
-
-//@Qualifier
-//annotation class json1
-//
-//@Qualifier
-//annotation class json2
 
 @InstallIn(SingletonComponent::class)
 @Module
 object MovieApiModule {
 
-    //daca am mai multe instante de tip Json cu alte valori ?
-
-    //@json1
     @Provides
     fun provideJson() = Json {
         coerceInputValues = true
         ignoreUnknownKeys = true
     }
 
-//    @json2
-//    @Provides
-//    fun provideJson2() = Json {
-//        coerceInputValues = true
-//    }
 
     @Provides
     fun provideMovieRetrofit(json: Json): TheMovieDBService {

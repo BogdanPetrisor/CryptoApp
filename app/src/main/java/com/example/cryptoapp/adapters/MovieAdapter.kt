@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoapp.R
@@ -14,22 +16,23 @@ class MovieAdapter(
     private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit,
     private val clickCallback: (id: Int) -> Unit
 ) :
-    RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
-    var list = listOf<ResultMoviesAndSeriesModel>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    ListAdapter<ResultMoviesAndSeriesModel, MovieAdapter.MovieViewHolder>(object :
+        DiffUtil.ItemCallback<ResultMoviesAndSeriesModel>() {
+        override fun areItemsTheSame(
+            oldItem: ResultMoviesAndSeriesModel,
+            newItem: ResultMoviesAndSeriesModel
+        ): Boolean =
+            oldItem.id == newItem.id
 
-    fun modifyOneElement(model: ResultMoviesAndSeriesModel) {
-        val position = list.indexOf(model)
-        list = list.map {
-            if (model.id == it.id) {
-                return@map it.copy(isFavorite = !it.isFavorite)
-            } else it
-        }
-        notifyItemChanged(position)
+
+        override fun areContentsTheSame(
+            oldItem: ResultMoviesAndSeriesModel,
+            newItem: ResultMoviesAndSeriesModel
+        ): Boolean =
+            oldItem == newItem
     }
+    ) {
+
 
     inner class MovieViewHolder(
         private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit,
@@ -77,11 +80,8 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.binding(list[position])
+        holder.binding(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
 
 }

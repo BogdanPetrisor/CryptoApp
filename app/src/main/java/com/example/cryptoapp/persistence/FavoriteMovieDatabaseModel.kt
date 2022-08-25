@@ -13,5 +13,8 @@ data class FavoriteMovieDatabaseModel(
     var id: String = "",
     @ColumnInfo
     var name: String = "",
-
+    @ColumnInfo
+    var isFavorite: Boolean = false,
+    @ColumnInfo
+    var movieType: String = ""
 )

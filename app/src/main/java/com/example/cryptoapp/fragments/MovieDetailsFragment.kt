@@ -32,8 +32,6 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movieDetailsViewModel = viewModel
-        //TODO: metoda trebuie apelata in viewmodel
-        viewModel.setMovie(movieId.toString())
         setupMovieImage()
     }
 

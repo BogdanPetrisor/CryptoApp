@@ -27,7 +27,6 @@ class UserRepository @Inject constructor(
 
     suspend fun sessionId(tokenModel: TokenModel): SessionModel {
         val session = service.sessionId(apiKey, tokenModel)
-        //sessionId = session.sessionId
         with(saveSessionId.edit()){
             putString("session",session.sessionId)
             apply()

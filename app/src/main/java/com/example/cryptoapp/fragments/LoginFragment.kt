@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cryptoapp.LoginState
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.FragmentHomeScreenBinding
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.viewModels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint

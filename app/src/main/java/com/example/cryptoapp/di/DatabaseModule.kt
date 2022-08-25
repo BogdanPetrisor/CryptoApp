@@ -37,10 +37,4 @@ object DatabaseModule {
     }
 
 
-//    @Provides
-//    fun provideJson22() = Json {
-//        coerceInputValues = true
-//        ignoreUnknownKeys = true
-//    }
-
 }

@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchMovieViewModel @Inject constructor(
-    private val dao: FavoriteMovieDao,
     private val movieRepository: TheMovieDBRepository
 ) : ViewModel() {
 
@@ -32,26 +31,23 @@ class SearchMovieViewModel @Inject constructor(
                 val searchedMoviesPage1 = movieRepository.getSearchMovies(query, 1).results
                 val searchedMoviesPage2 = movieRepository.getSearchMovies(query, 2).results
                 val searchedMovies = searchedMoviesPage1.plus(searchedMoviesPage2)
-                _movies.postValue(searchedMovies)
+                movieRepository.getAllFavoritesMovies().collect { favoriteMovies ->
+                    _movies.postValue(searchedMovies.map { movie ->
+                        if (favoriteMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                            return@map movie.copy(isFavorite = true)
+                        }
+                        return@map movie
+                    })
+                }
             }
         }
     }
 
-    val longClickCallback: (model: ResultMoviesAndSeriesModel, view: RecyclerView) -> Unit =
-        { model, view->
-            viewModelScope.launch(Dispatchers.IO) {
-                if (model.isFavorite) {
-                    dao.deleteOne(model.id.toString())
-                } else {
-                    dao.insertOne(
-                        FavoriteMovieDatabaseModel(
-                            model.id.toString(),
-                            model.name
-                        )
-                    )
-                }
-            }
-            (view.adapter as? MovieAdapter)?.modifyOneElement(model)
+    val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit = {
+        job.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            movieRepository.longClickCallback(it)
         }
+    }
 
 }

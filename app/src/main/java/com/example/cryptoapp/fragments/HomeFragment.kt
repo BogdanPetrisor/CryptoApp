@@ -105,41 +105,41 @@ class HomeFragment : Fragment() {
         binding.starsRecycleView.adapter = adapter
     }
 
-    private val longClickCallback: (model: ResultMoviesAndSeriesModel, view: RecyclerView) -> Unit =
-        { model, view ->
+    private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit =
+        { model->
             viewModel.longClickCallback(model)
-            (view.adapter as MovieAdapter).modifyOneElement(model)
         }
 
     private fun showTopRatedMovies() {
         val adapter = MovieAdapter(
-            { model -> longClickCallback(model, binding.ratedMoviesRecycleView) },
+            { model -> longClickCallback(model) },
             { id -> clickCallback(id) }
         )
+
         viewModel.topRatedMovies.observe(viewLifecycleOwner) { movies ->
-            adapter.list = movies
+            adapter.submitList(movies)
         }
         binding.ratedMoviesRecycleView.adapter = adapter
     }
 
     private fun showPopularMovies() {
         val adapter = MovieAdapter(
-            { model -> longClickCallback(model, binding.popularMoviesRecycleView) },
+            { model -> longClickCallback(model) },
             { id -> clickCallback(id) }
         )
         viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
-            adapter.list = movies
+            adapter.submitList(movies)
         }
         binding.popularMoviesRecycleView.adapter = adapter
     }
 
     private fun showAiringTodayMovies() {
         val adapter = MovieAdapter(
-            { model -> longClickCallback(model, binding.airingMoviesRecycleView) },
+            { model -> longClickCallback(model) },
             { id -> clickCallback(id) }
         )
         viewModel.airingTodayMovies.observe(viewLifecycleOwner) { movies ->
-            adapter.list = movies
+            adapter.submitList(movies)
         }
         binding.airingMoviesRecycleView.adapter = adapter
     }

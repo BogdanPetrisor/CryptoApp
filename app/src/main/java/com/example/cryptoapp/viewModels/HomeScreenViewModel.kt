@@ -14,19 +14,24 @@ import com.example.cryptoapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val dao: FavoriteMovieDao,
     private val movieRepository: TheMovieDBRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
     private var job: Job = Job()
+
     init {
         getMovies()
     }
+
+    private val _favoritesMovies = MutableLiveData<List<FavoriteMovieDatabaseModel>>()
+    val favoritesMovies: LiveData<List<FavoriteMovieDatabaseModel>>
+        get() = _favoritesMovies
 
     private val _topRatedMovies = MutableLiveData<List<ResultMoviesAndSeriesModel>>()
     val topRatedMovies: LiveData<List<ResultMoviesAndSeriesModel>>
@@ -55,36 +60,49 @@ class HomeScreenViewModel @Inject constructor(
     private fun getMovies() {
         job.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            _topRatedMovies.postValue(movieRepository.getTopRatedMovies().results)
-            _popularMovies.postValue(movieRepository.getPopularMovies().results)
-            _airingTodayMovies.postValue(movieRepository.getAiringTodayMovies().results)
             _movieStars.postValue(movieRepository.getPopularPeople().results)
             val response =
                 apolloClient.query(ShipsQuery()).execute()
             _ships.postValue(response.data?.launchLatest?.ships as List<ShipsQuery.Ship>)
             _galleryMovies.postValue(movieRepository.getTrendingMoviesAndSeries().results)
+            movieRepository.getAllFavoritesMovies().collect { favoritesMovies ->
+
+                _topRatedMovies.postValue(movieRepository.getTopRatedMovies().map { movie ->
+                    if (favoritesMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                        return@map movie.copy(isFavorite = true)
+                    }
+                    return@map movie
+                })
+
+                _popularMovies.postValue(movieRepository.getPopularMovies().map { movie ->
+                    if (favoritesMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                        return@map movie.copy(isFavorite = true)
+                    }
+                    return@map movie
+                })
+
+                _airingTodayMovies.postValue(movieRepository.getAiringTodayMovies().map { movie ->
+                    if (favoritesMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                        return@map movie.copy(isFavorite = true)
+                    }
+                    return@map movie
+                })
+            }
+
         }
     }
 
-    fun doLogout(){
+    fun doLogout() {
         userRepository.logoutUser()
     }
 
-    val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit =
-        { model ->
-            viewModelScope.launch(Dispatchers.IO) {
-                if (model.isFavorite) {
-                    dao.deleteOne(model.id.toString())
-                } else {
-                    dao.insertOne(
-                        FavoriteMovieDatabaseModel(
-                            model.id.toString(),
-                            model.name
-                        )
-                    )
-                }
-            }
+
+    val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit = {
+        job.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            movieRepository.longClickCallback(it)
         }
+    }
 
 
 }

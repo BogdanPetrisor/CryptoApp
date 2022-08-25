@@ -10,11 +10,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val movieRepository: TheMovieDBRepository
+    private val movieRepository: TheMovieDBRepository,
+    private val saveStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var job: Job = Job()
 
+    private var job: Job = Job()
+    private val movieId by lazy { saveStateHandle.get<Int>("movieId") }
     private val _title = MutableLiveData<String>()
     val title: LiveData<String>
         get() = _title
@@ -31,9 +33,15 @@ class MovieDetailsViewModel @Inject constructor(
     val posterImage: LiveData<String>
         get() = _posterImage
 
-
-    fun setMovie(id: String)
-    {
+    init {
+        movieId.run {
+            if(this == null){
+                throw IllegalArgumentException("Movie id is require")
+            }
+            setMovie(this)
+        }
+    }
+    private fun setMovie(id: Int) {
         job.cancel()
 
         job = viewModelScope.launch(Dispatchers.IO) {

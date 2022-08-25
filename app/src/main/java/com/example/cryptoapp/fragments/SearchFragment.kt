@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.databinding.FragmentSearchBinding
 import com.example.cryptoapp.adapters.MovieAdapter
 import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
@@ -54,14 +55,19 @@ class SearchFragment : Fragment() {
 
     }
 
+    private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit =
+        { model ->
+            viewModel.longClickCallback(model)
+        }
+
     fun showSearchedMovies(
         moviesList: List<ResultMoviesAndSeriesModel>,
     ) {
         val adapter =
-            MovieAdapter({ model -> viewModel.longClickCallback(model, binding.searchRecycleView) },
+            MovieAdapter({ model -> longClickCallback(model) },
                 { id -> clickCallback(id) }
             )
-        adapter.list = moviesList
+        adapter.submitList(moviesList)
         val gridLayoutManager = GridLayoutManager(activity, 3)
         binding.searchRecycleView.layoutManager = gridLayoutManager
         binding.searchRecycleView.adapter = adapter
