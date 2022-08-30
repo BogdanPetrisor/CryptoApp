@@ -2,6 +2,7 @@ package com.example.cryptoapp.viewModels
 
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
+import com.apollographql.apollo3.exception.ApolloHttpException
 import com.example.cryptoapp.ShipsQuery
 import com.example.cryptoapp.repository.TheMovieDBRepository
 import com.example.cryptoapp.apolloClient
@@ -14,8 +15,9 @@ import com.example.cryptoapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,21 +31,38 @@ class HomeScreenViewModel @Inject constructor(
         getMovies()
     }
 
-    private val _favoritesMovies = MutableLiveData<List<FavoriteMovieDatabaseModel>>()
-    val favoritesMovies: LiveData<List<FavoriteMovieDatabaseModel>>
-        get() = _favoritesMovies
+    private val topRatedMovies = flow {emit(movieRepository.getTopRatedMovies()) }
+    val topRatedMoviesWithFavorites: StateFlow<List<ResultMoviesAndSeriesModel>> =
+        topRatedMovies.combine(movieRepository.getAllFavoritesMovies()) { topRatedMovies, favoriteMovies ->
+            topRatedMovies.map { movie ->
+                if (favoriteMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                    return@map movie.copy(isFavorite = true)
+                }
+                return@map movie
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    private val _topRatedMovies = MutableLiveData<List<ResultMoviesAndSeriesModel>>()
-    val topRatedMovies: LiveData<List<ResultMoviesAndSeriesModel>>
-        get() = _topRatedMovies
+    private val popularMovies = flow {emit(movieRepository.getPopularMovies()) }
+    val popularMoviesWithFavorites: StateFlow<List<ResultMoviesAndSeriesModel>> =
+        popularMovies.combine(movieRepository.getAllFavoritesMovies()) { popularMovies, favoriteMovies ->
+            popularMovies.map { movie ->
+                if (favoriteMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                    return@map movie.copy(isFavorite = true)
+                }
+                return@map movie
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    private val _popularMovies = MutableLiveData<List<ResultMoviesAndSeriesModel>>()
-    val popularMovies: LiveData<List<ResultMoviesAndSeriesModel>>
-        get() = _popularMovies
-
-    private val _airingTodayMovies = MutableLiveData<List<ResultMoviesAndSeriesModel>>()
-    val airingTodayMovies: LiveData<List<ResultMoviesAndSeriesModel>>
-        get() = _airingTodayMovies
+    private val airingTodayMovies = flow{emit(movieRepository.getAiringTodayMovies()) }
+    val airingTodayMoviesWithFavorites: StateFlow<List<ResultMoviesAndSeriesModel>> =
+        airingTodayMovies.combine(movieRepository.getAllFavoritesMovies()){airingTodayMovies, favoriteMovies ->
+            airingTodayMovies.map { movie ->
+                if (favoriteMovies.firstOrNull { it.id == movie.id.toString() } != null) {
+                    return@map movie.copy(isFavorite = true)
+                }
+                return@map movie
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _movieStars = MutableLiveData<List<ResultPopularPeopleModel>>()
     val movieStars: LiveData<List<ResultPopularPeopleModel>>
@@ -60,36 +79,21 @@ class HomeScreenViewModel @Inject constructor(
     private fun getMovies() {
         job.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            _movieStars.postValue(movieRepository.getPopularPeople().results)
-            val response =
-                apolloClient.query(ShipsQuery()).execute()
-            _ships.postValue(response.data?.launchLatest?.ships as List<ShipsQuery.Ship>)
-            _galleryMovies.postValue(movieRepository.getTrendingMoviesAndSeries().results)
-            movieRepository.getAllFavoritesMovies().collect { favoritesMovies ->
-
-                _topRatedMovies.postValue(movieRepository.getTopRatedMovies().map { movie ->
-                    if (favoritesMovies.firstOrNull { it.id == movie.id.toString() } != null) {
-                        return@map movie.copy(isFavorite = true)
-                    }
-                    return@map movie
-                })
-
-                _popularMovies.postValue(movieRepository.getPopularMovies().map { movie ->
-                    if (favoritesMovies.firstOrNull { it.id == movie.id.toString() } != null) {
-                        return@map movie.copy(isFavorite = true)
-                    }
-                    return@map movie
-                })
-
-                _airingTodayMovies.postValue(movieRepository.getAiringTodayMovies().map { movie ->
-                    if (favoritesMovies.firstOrNull { it.id == movie.id.toString() } != null) {
-                        return@map movie.copy(isFavorite = true)
-                    }
-                    return@map movie
-                })
+            try {
+                _movieStars.postValue(movieRepository.getPopularPeople().results)
+            } catch (ex: NullPointerException) {
             }
-
+            try {
+                val response =
+                    apolloClient.query(ShipsQuery()).execute()
+                _ships.postValue(response.data?.launchLatest?.ships as List<ShipsQuery.Ship>)
+            } catch (ex: ApolloHttpException) {
+            }
+            _galleryMovies.postValue(movieRepository.getTrendingMoviesAndSeries().results)
         }
+    }
+    init {
+        getMovies()
     }
 
     fun doLogout() {

@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import com.example.cryptoapp.movie.ResultMoviesAndSeriesModel
 import com.example.cryptoapp.ships.ShipsListAdapter
 import com.example.cryptoapp.viewModels.HomeScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @Suppress("UNCHECKED_CAST")
 @AndroidEntryPoint
@@ -49,7 +53,7 @@ class HomeFragment : Fragment() {
                 R.id.action_homeFragment_to_loginFragment,
                 null,
                 navOptions {
-                popUpTo(R.id.homeFragment){inclusive=true}
+                    popUpTo(R.id.homeFragment) { inclusive = true }
                 })
         }
     }
@@ -106,7 +110,7 @@ class HomeFragment : Fragment() {
     }
 
     private val longClickCallback: (model: ResultMoviesAndSeriesModel) -> Unit =
-        { model->
+        { model ->
             viewModel.longClickCallback(model)
         }
 
@@ -115,11 +119,14 @@ class HomeFragment : Fragment() {
             { model -> longClickCallback(model) },
             { id -> clickCallback(id) }
         )
-
-        viewModel.topRatedMovies.observe(viewLifecycleOwner) { movies ->
-            adapter.submitList(movies)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.topRatedMoviesWithFavorites.collect { movies ->
+                    binding.ratedMoviesRecycleView.adapter = adapter
+                    adapter.submitList(movies)
+                }
+            }
         }
-        binding.ratedMoviesRecycleView.adapter = adapter
     }
 
     private fun showPopularMovies() {
@@ -127,10 +134,14 @@ class HomeFragment : Fragment() {
             { model -> longClickCallback(model) },
             { id -> clickCallback(id) }
         )
-        viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
-            adapter.submitList(movies)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.popularMoviesWithFavorites.collect { movies ->
+                    binding.popularMoviesRecycleView.adapter = adapter
+                    adapter.submitList(movies)
+                }
+            }
         }
-        binding.popularMoviesRecycleView.adapter = adapter
     }
 
     private fun showAiringTodayMovies() {
@@ -138,10 +149,14 @@ class HomeFragment : Fragment() {
             { model -> longClickCallback(model) },
             { id -> clickCallback(id) }
         )
-        viewModel.airingTodayMovies.observe(viewLifecycleOwner) { movies ->
-            adapter.submitList(movies)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.airingTodayMoviesWithFavorites.collect { movies ->
+                    binding.airingMoviesRecycleView.adapter = adapter
+                    adapter.submitList(movies)
+                }
+            }
         }
-        binding.airingMoviesRecycleView.adapter = adapter
     }
 
     val clickCallback: (id: Int) -> Unit = { id ->
